@@ -10,8 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "cliente") // TODO : Cambiar nombre
-public class Cliente implements Serializable {
+@Table(name = "") //TODO: cambiar nombre de tabla
+public class Contrato implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
