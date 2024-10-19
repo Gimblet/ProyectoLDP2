@@ -1,5 +1,9 @@
 package com.cibertec.app.service;
 
-public interface EventoService {
+import com.cibertec.app.entity.Evento;
 
+import java.util.List;
+
+public interface EventoService {
+    public List<Evento> getAllEvento();
 }

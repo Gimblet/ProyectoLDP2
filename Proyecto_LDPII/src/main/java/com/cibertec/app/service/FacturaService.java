@@ -1,5 +1,9 @@
 package com.cibertec.app.service;
 
-public interface FacturaService {
+import com.cibertec.app.entity.Factura;
 
+import java.util.List;
+
+public interface FacturaService {
+    public List<Factura> getAllFactura();
 }
