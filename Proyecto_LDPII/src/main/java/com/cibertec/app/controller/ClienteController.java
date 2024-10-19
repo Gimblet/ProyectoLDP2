@@ -12,7 +12,8 @@ public class ClienteController {
     ClienteRepository clienteRepository;
 
     @GetMapping("/")
-   public String Index() {
+    public String Index() {
         return "index";
-   }
+    }
+
 }
