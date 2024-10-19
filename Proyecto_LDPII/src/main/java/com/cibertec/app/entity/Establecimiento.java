@@ -11,11 +11,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tbO") // TODO: cambiar nombre de tabla
-public class Organizador implements Serializable {
+@Table(name = "tbL") //TODO: cambiar nombre tabla
+public class Establecimiento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	private int idOrganizador;
+	private int idLocal;
 }
