@@ -34,6 +34,18 @@ public class Cliente implements Serializable {
 	@Basic(optional = false)
 	private String direccion;
 
+	@Column(name = "claveCliente", nullable = false, length = 100)
+	private String clave;
+
+	public Cliente(String nombre, String correo, String telefono, String direccion, String clave) {
+		this.nombre = nombre;
+		this.correo = correo;
+		this.telefono = telefono;
+		this.direccion = direccion;
+		this.clave = clave;
+	}
+
 	public Cliente() {
+
 	}
 }
