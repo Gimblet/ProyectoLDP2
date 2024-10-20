@@ -11,20 +11,35 @@ import java.util.List;
 public class ClienteServiceImpl implements ClienteService {
     ClienteRepository clienteRepository;
 
+    public ClienteServiceImpl(ClienteRepository clienteRepository){
+        super();
+        this.clienteRepository = clienteRepository;
+    }
+
     @Override
     public List<Cliente> getAllCliente() {
         return clienteRepository.findAll();
     }
 
     @Override
-    public Cliente getClienteById(Long id) {
-        return null;
+    public Cliente getClienteById(Integer id) {
+        return clienteRepository.findById(id).get();
+    }
+
+    @Override
+    public Cliente getClienteByEmail(String email) {
+        return clienteRepository.findByEmail(email);
+    }
+
+    @Override
+    public Cliente getClienteByTelefono(String telefono) {
+        return clienteRepository.findByTelefono(telefono);
     }
 
     @Override
     public Cliente saveCliente(Cliente cliente) {
-        Cliente usuario = new Cliente(cliente.getNombre(), cliente.getCorreo(), cliente.getTelefono(), cliente.getTelefono(), cliente.getClave());
-        return clienteRepository.save(cliente);
+        Cliente usuario = new Cliente(cliente.getNombre(), cliente.getCorreo(), cliente.getClave(), cliente.getTelefono(), cliente.getDireccion());
+        return clienteRepository.save(usuario);
     }
 
     @Override

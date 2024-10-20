@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Cliente </title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">Reserva de Eventos</a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+<br/>
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">Datos Ingresados Incorrectos</div>
+            </div>
+            <div th:if="${param.success}">
+                <div class="alert alert-info">
+                    Te has registrado con exito es nuestra aplicación.!
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Formulario de Registro</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" role="form" th:action="@{/Cliente/registerSubmited}" th:object="${cliente}"
+                          class="form-horizontal">
+                        <div class="form-group mb-3">
+                            <label class="control-label">Nombres</label>
+                            <input type="text"
+                                   id="nombreCliente" name="nombreCliente"
+                                   class="form-control"
+                                   placeholder="Ingresar Nombre"
+                                   th:field="*{nombre}"/>
+                            <p th:errors="*{nombre}" class="text-danger"
+                               th:if="${#fields.hasErrors('nombre')}"></p>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="control-label">Correo</label>
+                            <input type="email"
+                                   id="correoCliente" name="correoCliente"
+                                   class="form-control"
+                                   placeholder="Ingresar Correo"
+                                   th:field="*{correo}"/>
+                            <p th:errors="*{correo}" class="text-danger"
+                               th:if="${#fields.hasErrors('correo')}"></p>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="control-label">Clave</label>
+                            <input type="password"
+                                   id="claveCliente" name="claveCLiente"
+                                   class="form-control"
+                                   placeholder="Ingresar Clave"
+                                   th:field="*{clave}"/>
+                            <p th:errors="*{clave}" class="text-danger"
+                               th:if="${#fields.hasErrors('clave')}"></p>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="control-label">Telefono</label>
+                            <input type="text"
+                                   id="telefonoCliente" name="telefonoCLiente"
+                                   class="form-control"
+                                   placeholder="Ingresar Clave"
+                                   th:field="*{telefono}"/>
+                            <p th:errors="*{telefono}" class="text-danger"
+                               th:if="${#fields.hasErrors('telefono')}"></p>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="control-label">Direccion</label>
+                            <input type="text"
+                                   id="direccion" name="direccion"
+                                   class="form-control"
+                                   placeholder="Ingresar direccion"
+                                   th:field="*{direccion}"/>
+                            <p th:errors="*{direccion}" class="text-danger"
+                               th:if="${#fields.hasErrors('direccion')}"></p>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

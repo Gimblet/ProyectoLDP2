@@ -16,6 +16,7 @@ public class Cliente implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "idCliente")
 	private Integer idCliente;
 
 	@Column(name = "nombreCliente")
@@ -26,7 +27,10 @@ public class Cliente implements Serializable {
 	@Basic(optional = false)
 	private String correo;
 
-	@Column(name = "telefonoCLiente")
+	@Column(name = "claveCliente", nullable = false, length = 100)
+	private String clave;
+
+	@Column(name = "telefonoCliente")
 	@Basic(optional = false)
 	private String telefono;
 
@@ -34,15 +38,12 @@ public class Cliente implements Serializable {
 	@Basic(optional = false)
 	private String direccion;
 
-	@Column(name = "claveCliente", nullable = false, length = 100)
-	private String clave;
-
-	public Cliente(String nombre, String correo, String telefono, String direccion, String clave) {
+	public Cliente(String nombre, String correo, String clave, String telefono, String direccion) {
 		this.nombre = nombre;
 		this.correo = correo;
+		this.clave = clave;
 		this.telefono = telefono;
 		this.direccion = direccion;
-		this.clave = clave;
 	}
 
 	public Cliente() {

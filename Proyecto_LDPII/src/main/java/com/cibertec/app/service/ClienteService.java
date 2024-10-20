@@ -7,7 +7,11 @@ import com.cibertec.app.entity.Cliente;
 public interface ClienteService {
 	public List<Cliente> getAllCliente();
 
-	public Cliente getClienteById(Long id);
+	public Cliente getClienteById(Integer id);
+
+	public Cliente getClienteByEmail(String email);
+
+	public Cliente getClienteByTelefono(String telefono);
 
 	public Cliente saveCliente(Cliente cliente);
 
