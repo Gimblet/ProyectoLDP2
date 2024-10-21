@@ -1,7 +1,10 @@
 package com.cibertec.app.controller;
 
 import com.cibertec.app.entity.Cliente;
+import com.cibertec.app.entity.Evento;
 import com.cibertec.app.service.ClienteService;
+import com.cibertec.app.service.EventoService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +13,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 public class ClienteController {
 
     @Autowired
     ClienteService clienteService;
+
+    @Autowired
+    EventoService eventoService;
 
     @GetMapping("/")
     public String Index() {
@@ -67,14 +75,14 @@ public class ClienteController {
     }
 
     @PostMapping("/login")
-    public String iniciarSesion(Cliente cliente) {
+    public String iniciarSesion(Cliente cliente, HttpServletRequest request, Model model) {
 
-        boolean resultado = clienteService.login(cliente);
+        boolean resultado = clienteService.login(cliente, request);
 
         if (resultado) {
-//          model.addAttribute("usuarios", usuarioService.listarTodosUsuario());
-//          model.addAttribute("rolList", rolService.listarTodosRol());
-            return "Cliente/index";
+            Integer id = (Integer) request.getSession().getAttribute("id");
+            model.addAttribute("eventos", eventoService.getEventoByCliente(id));
+            return "/Cliente/eventos";
         } else {
             return "redirect:?error";
         }

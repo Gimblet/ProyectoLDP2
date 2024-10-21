@@ -17,4 +17,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query(value = "SELECT * FROM cliente AS c WHERE c.telefonoCliente = :telefono", nativeQuery = true)
     public Cliente findByTelefono(@Param("telefono") String telefono);
+
 }

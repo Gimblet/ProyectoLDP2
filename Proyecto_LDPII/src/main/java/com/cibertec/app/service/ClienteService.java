@@ -3,6 +3,7 @@ package com.cibertec.app.service;
 import java.util.List;
 
 import com.cibertec.app.entity.Cliente;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface ClienteService {
 	public List<Cliente> getAllCliente();
@@ -15,5 +16,5 @@ public interface ClienteService {
 
 	public Cliente saveCliente(Cliente cliente);
 
-	public boolean login(Cliente cliente);
+	public boolean login(Cliente cliente, HttpServletRequest request);
 }

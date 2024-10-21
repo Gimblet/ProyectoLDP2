@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="ISO-8859-1">
+    <meta charset="UTF-8">
     <title>Pagina Principal - Cliente</title>
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -18,21 +18,21 @@
                 aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-    </div>
-    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/evento}">Eventos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/contrato}">Contratos</a>
-            </li>
-        </ul>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/Cliente/eventos}">Eventos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/contrato}">Contratos</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 <div class="container">
     <div class="row">
-        <h1>Lista Clientes</h1>
+        <h1>Lista de Eventos</h1>
     </div>
 
     <div class="row">
@@ -47,7 +47,7 @@
             <th>Id Evento</th>
             <th>Nombre del Evento</th>
             <th>Fecha del Evento</th>
-            <th>Hora(s) de duración</th>
+            <th>Hora(s) de duraciÃ³n</th>
             <th>Costo</th>
             <th>Acciones</th>
         </tr>
@@ -55,14 +55,17 @@
         <tbody>
         <tr th:each="evento: ${eventos}">
             <td th:text="${evento.idEvento}"></td>
-            <td th:text="${evento.nombreEvento}"></td>
-            <td th:text="${evento.horasEvento}"></td>
-            <td th:text="${evento.montoEvento}"></td>
+            <td th:text="${evento.nombre}"></td>
+            <td th:text="${evento.fecha}"></td>
+            <td th:text="${evento.duracion}"></td>
+            <td th:text="${evento.monto}"></td>
             <td>
-                <a th:href="@{/evento/edit/{id}(id=${evento.idEvento})}"
-                   class="btn btn-primary">Editar</a>
-                <a th:href="@{/cliente/{id}(id=${evento.idEvento})}"
-                   class="btn btn-danger">Eliminar</a>
+                <div class="btn-group">
+                    <a th:href="@{/evento/edit/{id}(id=${evento.idEvento})}"
+                       class="btn btn-primary">Editar</a>
+                    <a th:href="@{/cliente/{id}(id=${evento.idEvento})}"
+                       class="btn btn-danger">Eliminar</a>
+                </div>
             </td>
         </tr>
         </tbody>

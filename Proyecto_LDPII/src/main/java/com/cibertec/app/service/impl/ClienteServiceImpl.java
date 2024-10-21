@@ -3,6 +3,7 @@ package com.cibertec.app.service.impl;
 import com.cibertec.app.entity.Cliente;
 import com.cibertec.app.repository.ClienteRepository;
 import com.cibertec.app.service.ClienteService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,13 +44,16 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public boolean login(Cliente cliente) {
+    public boolean login(Cliente cliente, HttpServletRequest request) {
         boolean ingresado = false;
         Cliente entidad = clienteRepository.findByEmailAndPassword(cliente.getCorreo(), cliente.getClave());
 
         if(entidad != null){
             ingresado = true;
+            request.getSession().setAttribute("id", entidad.getIdCliente());
         }
+
+        System.out.println(request.getSession().getAttribute("id"));
 
         return ingresado;
     }
