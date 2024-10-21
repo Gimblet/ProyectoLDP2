@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 public class ClienteController {
@@ -118,7 +117,7 @@ public class ClienteController {
     }
 
     @PostMapping("/Cliente/createEvento")
-    public String CreateEvento(@ModelAttribute("evento") Evento evento, BindingResult resultado, Model model) {
+    public String createEvento(@ModelAttribute("evento") Evento evento, BindingResult resultado, Model model) {
 
         if (evento.getNombre() == null || evento.getNombre().isEmpty()) {
             resultado.rejectValue("nombre", null, "Ingresar Nombre del Evento");
@@ -132,17 +131,6 @@ public class ClienteController {
             resultado.rejectValue("duracion", null, "El evento debe durar como minimo una hora");
         }
 
-        //Todo: Arreglar formato de fechas
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        Date d1 = null;
-        try {
-            d1 = sdf.parse(evento.getFechaString());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        evento.setFecha(d1);
-
         if (resultado.hasErrors()) {
             model.addAttribute("evento", evento);
             model.addAttribute("personalList", personalService.obtenerListaPersonal());
@@ -150,10 +138,21 @@ public class ClienteController {
             return "/Cliente/createEvento";
         }
 
+        setEventoFecha(evento, evento.getFechaString());
 
         //todo: arreglar ruta de la pagina (no lleva a ningun lado)
         eventoService.crearEvento(evento);
         return "redirect:/Cliente/eventos?success";
     }
 
+
+    public void setEventoFecha(Evento evento, String fechaString) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date fecha = formatter.parse(fechaString);
+            evento.setFecha(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 }

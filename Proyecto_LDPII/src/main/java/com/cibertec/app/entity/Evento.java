@@ -30,7 +30,7 @@ public class Evento implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Basic(optional = false)
-	@DateTimeFormat(pattern = "dd-MM-yyyy")
+	@DateTimeFormat(pattern = "MM-dd-yyyy")
 	@Column(name = "fechaEvento")
 	private Date fecha;
 
