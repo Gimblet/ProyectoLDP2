@@ -1,6 +1,7 @@
 package com.cibertec.app.controller;
 
 import com.cibertec.app.entity.Cliente;
+import com.cibertec.app.entity.Establecimiento;
 import com.cibertec.app.entity.Evento;
 import com.cibertec.app.service.ClienteService;
 import com.cibertec.app.service.EstablecimientoService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -139,12 +141,11 @@ public class ClienteController {
         }
 
         setEventoFecha(evento, evento.getFechaString());
-
-        //todo: arreglar ruta de la pagina (no lleva a ningun lado)
+        calcularMonto(evento);
         eventoService.crearEvento(evento);
-        return "redirect:/Cliente/eventos?success";
+        //TODO: Este redirect no esta funcionando
+        return "redirect:/eventos?success";
     }
-
 
     public void setEventoFecha(Evento evento, String fechaString) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -154,5 +155,14 @@ public class ClienteController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public void calcularMonto(Evento evento){
+        Establecimiento local = evento.getEstablecimiento();
+
+        BigDecimal precio = local.getPrecio();
+        precio = precio.multiply(BigDecimal.valueOf(evento.getDuracion()));
+
+        evento.setMonto(precio);
     }
 }
