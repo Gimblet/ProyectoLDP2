@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -46,10 +49,6 @@ public class ClienteController {
 
     @PostMapping("/Cliente/registerSubmited")
     public String validarRegistro(@ModelAttribute("cliente") Cliente cliente, BindingResult resultado, Model model) {
-
-        System.out.println(cliente.getClave());
-        System.out.println(cliente.getDireccion());
-
         Cliente clienteExistente = clienteService.getClienteByEmail(cliente.getCorreo());
         Cliente telefonoExistente = clienteService.getClienteByTelefono(cliente.getTelefono());
 
@@ -116,6 +115,45 @@ public class ClienteController {
         model.addAttribute("personalList", personalService.obtenerListaPersonal());
         model.addAttribute("establecimientoList", establecimientoService.getAllEstablecimiento());
         return "/Cliente/createEvento";
+    }
+
+    @PostMapping("/Cliente/createEvento")
+    public String CreateEvento(@ModelAttribute("evento") Evento evento, BindingResult resultado, Model model) {
+
+        if (evento.getNombre() == null || evento.getNombre().isEmpty()) {
+            resultado.rejectValue("nombre", null, "Ingresar Nombre del Evento");
+        }
+
+        if (evento.getFechaString() == null || evento.getFechaString().isEmpty()) {
+            resultado.rejectValue("fecha", null, "Ingresar fecha");
+        }
+
+        if (evento.getDuracion() <= 0) {
+            resultado.rejectValue("duracion", null, "El evento debe durar como minimo una hora");
+        }
+
+        //Todo: Arreglar formato de fechas
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date d1 = null;
+        try {
+            d1 = sdf.parse(evento.getFechaString());
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        evento.setFecha(d1);
+
+        if (resultado.hasErrors()) {
+            model.addAttribute("evento", evento);
+            model.addAttribute("personalList", personalService.obtenerListaPersonal());
+            model.addAttribute("establecimientoList", establecimientoService.getAllEstablecimiento());
+            return "/Cliente/createEvento";
+        }
+
+
+        //todo: arreglar ruta de la pagina (no lleva a ningun lado)
+        eventoService.crearEvento(evento);
+        return "redirect:/Cliente/eventos?success";
     }
 
 }

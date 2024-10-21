@@ -7,6 +7,7 @@ import java.util.Date;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
@@ -24,8 +25,12 @@ public class Evento implements Serializable {
 	@Column(name = "nombreEvento")
 	private String nombre;
 
+	@Transient
+	private String fechaString;
+
 	@Temporal(TemporalType.DATE)
 	@Basic(optional = false)
+	@DateTimeFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "fechaEvento")
 	private Date fecha;
 

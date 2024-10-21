@@ -41,13 +41,17 @@
                         <input type="text" name="nombreEvento" th:field="*{nombre}"
                                class="form-control"
                                placeholder="Ingresar Nombre del Evento" />
+                        <p th:errors="*{nombre}" class="text-danger"
+                           th:if="${#fields.hasErrors('nombre')}"></p>
                     </div>
 
                     <div class="form-group">
                         <label>Fecha del Evento</label>
-                        <input type="date" name="fechaEvento" th:field="*{fecha}"
+                        <input type="date" name="fechaEvento" th:field="*{fechaString}"
                                class="form-control"
                                placeholder="Seleccione la fecha del evento" />
+                        <p th:errors="*{fechaString}" class="text-danger"
+                           th:if="${#fields.hasErrors('fechaString')}"></p>
                     </div>
 
                     <div class="form-group">
@@ -55,6 +59,8 @@
                         <input type="number" name="horasEvento" th:field="*{duracion}"
                                class="form-control"
                                placeholder="Ingrese cuantas horas durará el evento" />
+                        <p th:errors="*{duracion}" class="text-danger"
+                           th:if="${#fields.hasErrors('duracion')}"></p>
                     </div>
 
                     <div class="form-group">
@@ -74,15 +80,19 @@
                     <div class="form-group">
                         <label>Costo Aproximado del Evento</label>
                         <input type="number" name="stock" th:field="*{monto}"
-                               class="form-control" readonly disabled
+                               class="form-control"
                                placeholder="S/" />
+                        <p th:errors="*{monto}" class="text-danger"
+                           th:if="${#fields.hasErrors('monto')}"></p>
                     </div>
 
                     <div class="form-group" style="display: none">
                         <label>Id</label>
-                        <input type="text" name="idProd" th:field="*{cliente}"
-                               class="form-control"
+                        <input type="text" name="idCliente" th:field="*{cliente}"
+                               class="form-control" th:value="*{cliente}"
                                placeholder="Ingresar Id" />
+                        <p th:errors="*{cliente}" class="text-danger"
+                           th:if="${#fields.hasErrors('cliente')}"></p>
                     </div>
 
                     <div class="box-footer">
