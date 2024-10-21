@@ -3,7 +3,9 @@ package com.cibertec.app.controller;
 import com.cibertec.app.entity.Cliente;
 import com.cibertec.app.entity.Evento;
 import com.cibertec.app.service.ClienteService;
+import com.cibertec.app.service.EstablecimientoService;
 import com.cibertec.app.service.EventoService;
+import com.cibertec.app.service.PersonalService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,12 @@ public class ClienteController {
 
     @Autowired
     EventoService eventoService;
+
+    @Autowired
+    PersonalService personalService;
+
+    @Autowired
+    EstablecimientoService establecimientoService;
 
     @GetMapping("/")
     public String Index() {
@@ -86,8 +94,28 @@ public class ClienteController {
         } else {
             return "redirect:?error";
         }
+    }
 
+    @GetMapping("/Cliente/eventos")
+    public String listarEventos(HttpServletRequest request, Model model) {
+        Integer id = (Integer) request.getSession().getAttribute("id");
+        model.addAttribute("eventos", eventoService.getEventoByCliente(id));
+        return "eventos";
+    }
 
+    @GetMapping("/Cliente/preCreateEvento")
+    public String preCreateEvento(Model model, HttpServletRequest request) {
+        Integer id = (Integer) request.getSession().getAttribute("id");
+        Evento evento = new Evento();
+        Cliente cliente = new Cliente();
+
+        cliente.setIdCliente(id);
+        evento.setCliente(cliente);
+
+        model.addAttribute("evento", evento);
+        model.addAttribute("personalList", personalService.obtenerListaPersonal());
+        model.addAttribute("establecimientoList", establecimientoService.getAllEstablecimiento());
+        return "/Cliente/createEvento";
     }
 
 }

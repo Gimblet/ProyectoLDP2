@@ -9,4 +9,6 @@ public interface EventoService {
 
     public List<Evento> getEventoByCliente(Integer idCliente);
 
+    public Evento crearEvento(Evento evento);
+
 }

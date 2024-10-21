@@ -26,4 +26,9 @@ public class EventoServiceImpl implements EventoService {
     public List<Evento> getEventoByCliente(Integer idCLiente) {
         return eventoRepository.findEventosByCliente(idCLiente);
     }
+
+    @Override
+    public Evento crearEvento(Evento evento) {
+        return eventoRepository.save(evento);
+    }
 }
