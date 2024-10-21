@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="ISO-8859-1">
+    <title>Pagina Principal - Cliente</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
 </head>
 <body>
-<h1>Ingresaste!</h1>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">Reserva de Eventos</a>
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/evento}">Eventos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/contrato}">Contratos</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <h1>Lista Clientes</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <a th:href="@{/evento/new}" class="btn btn-primary btn-sm mb-3">Nuevo Evento</a>
+        </div>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Id Evento</th>
+            <th>Nombre del Evento</th>
+            <th>Fecha del Evento</th>
+            <th>Hora(s) de duración</th>
+            <th>Costo</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="evento: ${eventos}">
+            <td th:text="${evento.idEvento}"></td>
+            <td th:text="${evento.nombreEvento}"></td>
+            <td th:text="${evento.horasEvento}"></td>
+            <td th:text="${evento.montoEvento}"></td>
+            <td>
+                <a th:href="@{/evento/edit/{id}(id=${evento.idEvento})}"
+                   class="btn btn-primary">Editar</a>
+                <a th:href="@{/cliente/{id}(id=${evento.idEvento})}"
+                   class="btn btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>
