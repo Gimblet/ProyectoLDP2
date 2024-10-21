@@ -45,6 +45,10 @@ public class Evento implements Serializable {
 	@JoinColumn(name = "idEstablecimiento")
 	private Establecimiento establecimiento;
 
+	@ManyToOne
+	@JoinColumn(name = "idCliente")
+	private Cliente cliente;
+
 	public Evento() {
 	}
 }

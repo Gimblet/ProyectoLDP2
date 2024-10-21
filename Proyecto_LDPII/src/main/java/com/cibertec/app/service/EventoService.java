@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface EventoService {
     public List<Evento> getAllEvento();
+
+    public List<Evento> getEventoByCliente();
 }
