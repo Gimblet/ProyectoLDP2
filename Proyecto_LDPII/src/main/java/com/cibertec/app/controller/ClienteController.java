@@ -165,9 +165,11 @@ public class ClienteController {
 
     public void calcularMonto(Evento evento){
         Establecimiento local = evento.getEstablecimiento();
+        Personal personal = evento.getPersonal();
 
         BigDecimal precio = local.getPrecio();
         precio = precio.multiply(BigDecimal.valueOf(evento.getDuracion()));
+        precio = precio.add(personal.getMonto());
 
         evento.setMonto(precio);
     }
