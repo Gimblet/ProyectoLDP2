@@ -11,4 +11,6 @@ public interface EventoService {
 
     public Evento crearEvento(Evento evento);
 
+    public String deleteEvento(Integer idEvento);
+
 }

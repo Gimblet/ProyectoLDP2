@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
@@ -100,7 +101,7 @@ public class ClienteController {
     public String listarEventos(HttpServletRequest request, Model model) {
         Integer id = (Integer) request.getSession().getAttribute("id");
         model.addAttribute("eventos", eventoService.getEventoByCliente(id));
-        return "eventos";
+        return "/Cliente/eventos";
     }
 
     @GetMapping("/Cliente/preCreateEvento")
@@ -119,7 +120,7 @@ public class ClienteController {
     }
 
     @PostMapping("/Cliente/createEvento")
-    public String createEvento(@ModelAttribute("evento") Evento evento, BindingResult resultado, Model model) {
+    public String createEvento(@ModelAttribute("evento") Evento evento, BindingResult resultado, Model model, HttpServletRequest request) {
 
         if (evento.getNombre() == null || evento.getNombre().isEmpty()) {
             resultado.rejectValue("nombre", null, "Ingresar Nombre del Evento");
@@ -143,8 +144,12 @@ public class ClienteController {
         setEventoFecha(evento, evento.getFechaString());
         calcularMonto(evento);
         eventoService.crearEvento(evento);
-        //TODO: Este redirect no esta funcionando
-        return "redirect:/eventos?success";
+
+        //TODO: al agregar evento sale parseado con un formato
+
+        Integer idcliente = (Integer) request.getSession().getAttribute("id");
+        model.addAttribute("eventos",eventoService.getEventoByCliente(idcliente));
+        return "Cliente/eventos";
     }
 
     public void setEventoFecha(Evento evento, String fechaString) {
@@ -164,5 +169,13 @@ public class ClienteController {
         precio = precio.multiply(BigDecimal.valueOf(evento.getDuracion()));
 
         evento.setMonto(precio);
+    }
+
+    @GetMapping("/Cliente/eliminarEvento/{id}")
+    public String borrarEvento(@PathVariable Integer id, Model model,HttpServletRequest request){
+        eventoService.deleteEvento(id);
+        Integer idCliente = (Integer) request.getSession().getAttribute("id");
+        model.addAttribute("eventos", eventoService.getEventoByCliente(idCliente));
+        return "/Cliente/eventos";
     }
 }

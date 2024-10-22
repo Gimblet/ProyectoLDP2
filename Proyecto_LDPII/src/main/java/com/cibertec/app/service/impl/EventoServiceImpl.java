@@ -31,4 +31,10 @@ public class EventoServiceImpl implements EventoService {
     public Evento crearEvento(Evento evento) {
         return eventoRepository.save(evento);
     }
+
+    @Override
+    public String deleteEvento(Integer idEvento) {
+        eventoRepository.deleteById(idEvento);
+        return  "Evento " + String.valueOf(idEvento) + "Eliminado";
+    }
 }

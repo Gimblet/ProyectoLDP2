@@ -24,7 +24,7 @@
                     <a class="nav-link" th:href="@{/Cliente/eventos}">Eventos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/contrato}">Contratos</a>
+                    <a class="nav-link" th:href="@{/Cliente/facturas}">Facturas</a>
                 </li>
             </ul>
         </div>
@@ -44,6 +44,12 @@
     <div th:if="${param.success}">
         <div class="alert alert-info">
             Te has registrado con exito es nuestra aplicación.!
+        </div>
+    </div>
+
+    <div th:if="${param.info}">
+        <div class="alert alert-info">
+            Evento eliminado!
         </div>
     </div>
 
@@ -67,10 +73,12 @@
             <td th:text="${evento.monto}"></td>
             <td>
                 <div class="btn-group">
-                    <a th:href="@{/evento/edit/{id}(id=${evento.idEvento})}"
-                       class="btn btn-primary">Editar</a>
-                    <a th:href="@{/cliente/{id}(id=${evento.idEvento})}"
+                    <a th:href="@{/Cliente/eliminarEvento/{id}(id=${evento.idEvento})}"
                        class="btn btn-danger">Eliminar</a>
+                </div>
+                <div class="btn-group">
+                    <a th:href="@{/Cliente/detallesEvento/{id}(id=${evento.idEvento})}"
+                       class="btn btn-info">Detalles</a>
                 </div>
             </td>
         </tr>
