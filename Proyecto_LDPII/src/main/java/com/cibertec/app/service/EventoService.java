@@ -13,4 +13,6 @@ public interface EventoService {
 
     public String deleteEvento(Integer idEvento);
 
+    public Evento buscarEventoById(Integer id);
+
 }

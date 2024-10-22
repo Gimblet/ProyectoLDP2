@@ -37,4 +37,9 @@ public class EventoServiceImpl implements EventoService {
         eventoRepository.deleteById(idEvento);
         return  "Evento " + String.valueOf(idEvento) + "Eliminado";
     }
+
+    @Override
+    public Evento buscarEventoById(Integer id) {
+        return eventoRepository.findById(id).get();
+    }
 }

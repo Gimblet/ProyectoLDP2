@@ -3,6 +3,7 @@ package com.cibertec.app.controller;
 import com.cibertec.app.entity.Cliente;
 import com.cibertec.app.entity.Establecimiento;
 import com.cibertec.app.entity.Evento;
+import com.cibertec.app.entity.Personal;
 import com.cibertec.app.service.ClienteService;
 import com.cibertec.app.service.EstablecimientoService;
 import com.cibertec.app.service.EventoService;
@@ -177,5 +178,16 @@ public class ClienteController {
         Integer idCliente = (Integer) request.getSession().getAttribute("id");
         model.addAttribute("eventos", eventoService.getEventoByCliente(idCliente));
         return "/Cliente/eventos";
+    }
+
+    @GetMapping("/Cliente/detallesEvento/{id}")
+    public String detallesEvento(@PathVariable Integer id, Model model, HttpServletRequest request){
+        Evento detalle = eventoService.buscarEventoById(id);
+        Personal personal = detalle.getPersonal();
+        Establecimiento establecimiento = detalle.getEstablecimiento();
+        model.addAttribute("evento", detalle);
+        model.addAttribute("personal", personal);
+        model.addAttribute("establecimiento", establecimiento);
+        return "/Cliente/detailsEvento";
     }
 }
