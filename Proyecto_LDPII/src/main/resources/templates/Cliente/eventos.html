@@ -73,6 +73,10 @@
             <td th:text="${evento.monto}"></td>
             <td>
                 <div class="btn-group">
+                    <a th:href="@{/Cliente/preConfirmarEvento/{id}(id=${evento.idEvento})}"
+                       class="btn btn-primary">Confirmar</a>
+                </div>
+                <div class="btn-group">
                     <a th:href="@{/Cliente/eliminarEvento/{id}(id=${evento.idEvento})}"
                        class="btn btn-danger">Eliminar</a>
                 </div>

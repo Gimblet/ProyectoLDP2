@@ -1,9 +1,6 @@
 package com.cibertec.app.controller;
 
-import com.cibertec.app.entity.Cliente;
-import com.cibertec.app.entity.Establecimiento;
-import com.cibertec.app.entity.Evento;
-import com.cibertec.app.entity.Personal;
+import com.cibertec.app.entity.*;
 import com.cibertec.app.service.ClienteService;
 import com.cibertec.app.service.EstablecimientoService;
 import com.cibertec.app.service.EventoService;
@@ -142,11 +139,10 @@ public class ClienteController {
             return "/Cliente/createEvento";
         }
 
-        setEventoFecha(evento, evento.getFechaString());
-        calcularMonto(evento);
-        eventoService.crearEvento(evento);
-
         //TODO: al agregar evento sale parseado con un formato
+        setEventoFecha(evento, evento.getFechaString());
+        evento.setMonto(calcularMontoEstablecimientoYPersonal(evento));
+        eventoService.crearEvento(evento);
 
         Integer idcliente = (Integer) request.getSession().getAttribute("id");
         model.addAttribute("eventos",eventoService.getEventoByCliente(idcliente));
@@ -163,17 +159,6 @@ public class ClienteController {
         }
     }
 
-    public void calcularMonto(Evento evento){
-        Establecimiento local = evento.getEstablecimiento();
-        Personal personal = evento.getPersonal();
-
-        BigDecimal precio = local.getPrecio();
-        precio = precio.multiply(BigDecimal.valueOf(evento.getDuracion()));
-        precio = precio.add(personal.getMonto());
-
-        evento.setMonto(precio);
-    }
-
     @GetMapping("/Cliente/eliminarEvento/{id}")
     public String borrarEvento(@PathVariable Integer id, Model model,HttpServletRequest request){
         eventoService.deleteEvento(id);
@@ -183,7 +168,7 @@ public class ClienteController {
     }
 
     @GetMapping("/Cliente/detallesEvento/{id}")
-    public String detallesEvento(@PathVariable Integer id, Model model, HttpServletRequest request){
+    public String detallesEvento(@PathVariable Integer id, Model model){
         Evento detalle = eventoService.buscarEventoById(id);
         Personal personal = detalle.getPersonal();
         Establecimiento establecimiento = detalle.getEstablecimiento();
@@ -192,4 +177,70 @@ public class ClienteController {
         model.addAttribute("establecimiento", establecimiento);
         return "/Cliente/detailsEvento";
     }
+
+    @GetMapping("/Cliente/preConfirmarEvento/{id}")
+    public String preConfirmEvento(@PathVariable Integer id, Model model){
+        Factura factura = new Factura();
+
+        Evento evento = eventoService.buscarEventoById(id);
+        Personal personal = evento.getPersonal();
+        Establecimiento establecimiento = evento.getEstablecimiento();
+        Cliente cliente = evento.getCliente();
+
+        factura.setDescuento(0.05);
+
+        BigDecimal montoLocal = obtenerMontoLocal(evento);
+        BigDecimal montoLocalYPersonal = calcularMontoEstablecimientoYPersonal(evento);
+        BigDecimal montoDescuento = obtenerMontoDescuento(montoLocalYPersonal, factura);
+        BigDecimal montoIGV = obtenerMontoIGV(montoLocalYPersonal, montoDescuento);
+
+        factura.setPrecioFinal(calcularMontoTotal(montoLocalYPersonal,montoDescuento,montoIGV));
+
+        model.addAttribute("evento", evento);
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("personal", personal);
+        model.addAttribute("establecimiento", establecimiento);
+        model.addAttribute("montoLocal", montoLocal);
+        model.addAttribute("montoDescuento", montoDescuento);
+        model.addAttribute("montoIGV", montoIGV);
+        model.addAttribute("factura", factura);
+
+        return "/Cliente/confirmEvento";
+    }
+
+    public BigDecimal obtenerMontoLocal(Evento evento){
+        Establecimiento local = evento.getEstablecimiento();
+
+        BigDecimal precio = local.getPrecio();
+        precio = precio.multiply(BigDecimal.valueOf(evento.getDuracion()));
+
+        return precio;
+    }
+
+    public BigDecimal calcularMontoEstablecimientoYPersonal(Evento evento){
+        Establecimiento local = evento.getEstablecimiento();
+        Personal personal = evento.getPersonal();
+
+        BigDecimal precio = local.getPrecio();
+        precio = precio.multiply(BigDecimal.valueOf(evento.getDuracion()));
+        precio = precio.add(personal.getMonto());
+
+        return precio;
+    }
+
+    public BigDecimal obtenerMontoDescuento(BigDecimal resultado, Factura factura){
+        return resultado.multiply(BigDecimal.valueOf(factura.getDescuento()));
+    }
+
+    public BigDecimal obtenerMontoIGV(BigDecimal resultado, BigDecimal igv){
+        resultado = resultado.subtract(igv);
+        return resultado.multiply(BigDecimal.valueOf(0.18));
+    }
+
+    public BigDecimal calcularMontoTotal(BigDecimal resultado, BigDecimal descuento, BigDecimal IGV){
+        resultado = resultado.subtract(descuento); //restando el descuento del 5%
+        return resultado.add(IGV); //Devuelve el el precion con descuento + el costo del IGV
+
+    }
+
 }
