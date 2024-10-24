@@ -46,7 +46,11 @@
             Te has registrado con exito es nuestra aplicación.!
         </div>
     </div>
-
+    <div th:if="${param.facturasuccess}">
+        <div class="alert alert-info">
+            Factura confirmada con exito.!
+        </div>
+    </div>
     <div th:if="${param.info}">
         <div class="alert alert-info">
             Evento eliminado!

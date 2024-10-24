@@ -8,10 +8,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Getter
 @Setter
 @Entity
+@DynamicInsert
 @Table(name = "factura")
 public class Factura implements Serializable {
 

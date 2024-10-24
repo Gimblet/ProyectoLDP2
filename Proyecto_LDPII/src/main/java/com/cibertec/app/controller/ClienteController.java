@@ -1,10 +1,7 @@
 package com.cibertec.app.controller;
 
 import com.cibertec.app.entity.*;
-import com.cibertec.app.service.ClienteService;
-import com.cibertec.app.service.EstablecimientoService;
-import com.cibertec.app.service.EventoService;
-import com.cibertec.app.service.PersonalService;
+import com.cibertec.app.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +31,9 @@ public class ClienteController {
 
     @Autowired
     EstablecimientoService establecimientoService;
+
+    @Autowired
+    FacturaService facturaService;
 
     @GetMapping("/")
     public String Index() {
@@ -195,6 +195,7 @@ public class ClienteController {
         BigDecimal montoIGV = obtenerMontoIGV(montoLocalYPersonal, montoDescuento);
 
         factura.setPrecioFinal(calcularMontoTotal(montoLocalYPersonal,montoDescuento,montoIGV));
+        factura.setIdEvento(evento);
 
         model.addAttribute("evento", evento);
         model.addAttribute("cliente", cliente);
@@ -205,7 +206,7 @@ public class ClienteController {
         model.addAttribute("montoIGV", montoIGV);
         model.addAttribute("factura", factura);
 
-        return "/Cliente/confirmEvento";
+        return "/Cliente/confirmarEvento";
     }
 
     public BigDecimal obtenerMontoLocal(Evento evento){
@@ -241,6 +242,22 @@ public class ClienteController {
         resultado = resultado.subtract(descuento); //restando el descuento del 5%
         return resultado.add(IGV); //Devuelve el el precion con descuento + el costo del IGV
 
+    }
+
+    @PostMapping("/Cliente/confirmarEvento")
+    public String confirmarEvento(@ModelAttribute("factura") Factura factura, HttpServletRequest request, Model model){
+        String mensaje = facturaService.agregarFactura(factura);
+
+//        System.out.println("ID:" + factura.getId() + "Fecha:" + factura.getFecha()  + factura.getIdEvento().getIdEvento() + "----------------------");
+
+        if(mensaje.contains("Exito")){
+            Integer idcliente = (Integer) request.getSession().getAttribute("id");
+            model.addAttribute("eventos",eventoService.getEventoByCliente(idcliente));
+            return "/Cliente/eventos";
+        }
+        else{
+            return "confirmarEvento";
+        }
     }
 
 }

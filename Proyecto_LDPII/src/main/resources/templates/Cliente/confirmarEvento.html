@@ -34,7 +34,39 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
             <h1 class="text-center">Datos de Facturacion</h1>
-            <form th:action="@{/Cliente/createEvento}" th:object="${factura}" method="POST">
+
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">
+                    Factura confirmada con exito.!
+                </div>
+            </div>
+
+            <form th:action="@{/Cliente/confirmarEvento}" th:object="${factura}" method="POST">
+
+                <div class="form-group">
+                    <input style="display: none" type="text" name="horasEvento"
+                           th:field="*{idEvento}" th:value="*{idEvento}"
+                           class="form-control" disabled/>
+                </div>
+
+                <div class="form-group">
+                    <input style="display: none" type="number" name="horasEvento"
+                           th:field="*{descuento}" th:value="*{descuento}"
+                           class="form-control" disabled/>
+                </div>
+
+                <div class="form-group">
+                    <input style="display: none" type="date" name="horasEvento"
+                           th:field="*{fecha}" th:default="*{fecha}"
+                           class="form-control" disabled/>
+                </div>
+
+                <div class="form-group">
+                    <input style="display: none" type="number" name="horasEvento"
+                           th:field="*{precioFinal}" th:value="*{precioFinal}"
+                           class="form-control" disabled/>
+                </div>
+
                 <div class="card-body">
                     <h3>Cliente</h3>
 
@@ -116,21 +148,34 @@
                             th:text="${factura.getPrecioFinal()}"></span></strong></h5>
 
                     <div class="form-group">
-                        <input style="display: none" type="number" name="horasEvento"
-                               th:field="*{precioFinal}" th:value="*{precioFinal}"
-                               class="form-control" disabled/>
+                        <input style="display: none" type="text" name="idEvento"
+                               th:field="*{idEvento}" th:value="*{idEvento}"
+                               class="form-control" readonly/>
                     </div>
 
                     <div class="form-group">
-                        <input style="display: none" type="number" name="horasEvento"
+                        <input style="display: none" type="number" name="descuento"
                                th:field="*{descuento}" th:value="*{descuento}"
-                               class="form-control" disabled/>
+                               class="form-control" readonly/>
                     </div>
 
-                    <div class="btn-group">
-                        <a class="btn btn-secondary" th:href="@{/Cliente/eventos}">Volver</a>
-                        <a class="btn btn-primary" th:href="@{/Cliente/eventos}">Confirmar</a>
+                    <div class="form-group">
+                        <input style="display: none" type="date" name="fecha"
+                               th:field="*{fecha}" th:default="*{fecha}"
+                               class="form-control" readonly/>
                     </div>
+
+                    <div class="form-group">
+                        <input style="display: none" type="number" name="precioFinal"
+                               th:field="*{precioFinal}" th:value="*{precioFinal}"
+                               class="form-control" readonly/>
+                    </div>
+
+                    <div class="box-footer btn-group">
+                        <a class="btn btn-secondary" th:href="@{/Cliente/eventos}">Volver</a>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+
                 </div>
             </form>
         </div>

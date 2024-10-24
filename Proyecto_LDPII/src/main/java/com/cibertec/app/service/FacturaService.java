@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface FacturaService {
     public List<Factura> getAllFactura();
+
+    public String agregarFactura(Factura factura);
 }
