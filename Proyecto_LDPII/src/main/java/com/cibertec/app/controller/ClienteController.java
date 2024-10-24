@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Controller
@@ -139,24 +141,16 @@ public class ClienteController {
             return "/Cliente/createEvento";
         }
 
-        //TODO: al agregar evento sale parseado con un formato
-        setEventoFecha(evento, evento.getFechaString());
+        LocalDateTime parser = LocalDateTime.parse(evento.getFechaString());
+        parser.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh:mm"));
+        evento.setFecha(parser);
         evento.setMonto(calcularMontoEstablecimientoYPersonal(evento));
         eventoService.crearEvento(evento);
+        evento.setMonto(calcularMontoEstablecimientoYPersonal(evento));
 
         Integer idcliente = (Integer) request.getSession().getAttribute("id");
         model.addAttribute("eventos",eventoService.getEventoByCliente(idcliente));
         return "Cliente/eventos";
-    }
-
-    public void setEventoFecha(Evento evento, String fechaString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date fecha = formatter.parse(fechaString);
-            evento.setFecha(fecha);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
     }
 
     @GetMapping("/Cliente/eliminarEvento/{id}")

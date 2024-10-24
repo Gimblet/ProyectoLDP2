@@ -47,7 +47,7 @@
 
                     <div class="form-group">
                         <label>Fecha del Evento</label>
-                        <input type="date" name="fechaEvento" th:field="*{fechaString}"
+                        <input type="datetime-local" name="fechaEvento" th:field="*{fechaString}"
                                class="form-control"
                                placeholder="Seleccione la fecha del evento" />
                         <p th:errors="*{fechaString}" class="text-danger"
