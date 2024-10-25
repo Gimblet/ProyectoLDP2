@@ -32,4 +32,9 @@ public class FacturaServiceImpl implements FacturaService {
             return "Error";
         }
     }
+
+    @Override
+    public Factura obtenerFacturaID(Integer id) {
+        return repo.findById(id).get();
+    }
 }

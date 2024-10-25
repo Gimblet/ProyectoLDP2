@@ -8,4 +8,6 @@ public interface FacturaService {
     public List<Factura> getAllFactura();
 
     public String agregarFactura(Factura factura);
+
+    public Factura obtenerFacturaID(Integer id);
 }

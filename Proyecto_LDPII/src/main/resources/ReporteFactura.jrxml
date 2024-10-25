@@ -1,0 +1,115 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="ReporteFactura" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1602c181-e5fc-4867-800b-2f61c3cb66a2">
+
+    <field name="id" class="java.lang.Integer"/>
+    <field name="descuento" class="java.lang.Double"/>
+    <field name="fecha" class="java.time.LocalDate"/>
+    <field name="precioFinal" class="java.math.BigDecimal"/>
+    <field name="idEvento.nombre" class="java.lang.String"/>
+    <field name="idEvento.fecha" class="java.time.LocalDateTime"/>
+    <field name="idEvento.duracion" class="java.lang.Integer"/>
+    <field name="idEvento.monto" class="java.math.BigDecimal"/>
+    <field name="idEvento.cliente.nombre" class="java.lang.String"/>
+    <field name="idEvento.cliente.correo" class="java.lang.String"/>
+    <field name="idEvento.cliente.telefono" class="java.lang.String"/>
+    <field name="idEvento.cliente.direccion" class="java.lang.String"/>
+    <field name="idEvento.establecimiento.nombre" class="java.lang.String"/>
+    <field name="idEvento.establecimiento.direccion" class="java.lang.String"/>
+    <field name="idEvento.establecimiento.precio" class="java.math.BigDecimal"/>
+    <field name="idEvento.personal.monto" class="java.math.BigDecimal"/>
+
+    <background splitType="Stretch"/>
+    <title height="60" splitType="Stretch">
+        <element kind="frame" uuid="0df485e5-6818-4194-84ee-942b3e8b8f19" mode="Opaque" x="-20" y="-20" width="595" height="80" forecolor="#ADADAD" backcolor="#8F8F8F">
+            <element kind="staticText" uuid="95ad48ee-27b3-4074-a4e4-9bca6ead1d4c" x="50" y="23" width="272" height="40" forecolor="#FFFFFF" markup="none" fontName="DejaVu Sans" fontSize="29.0" bold="true">
+                <text><![CDATA[FACTURACIÓN]]></text>
+            </element>
+        </element>
+    </title>
+    <pageHeader height="469" splitType="Stretch">
+        <element kind="textField" uuid="302c42a5-1ee6-4934-a036-865bdbf4f468" x="370" y="21" width="170" height="17" fontSize="13.0" vTextAlign="Middle">
+            <expression><![CDATA[$F{fecha}]]></expression>
+        </element>
+        <element kind="staticText" uuid="f1c47ffe-0474-4a07-ac45-2acf7e0c1cf2" x="30" y="93" width="144" height="19" fontSize="13.0" vTextAlign="Middle">
+            <text><![CDATA[Nombre :]]></text>
+        </element>
+        <element kind="textField" uuid="4a20db05-6ec6-4061-ac8b-3bcc5dc5a082" x="180" y="93" width="360" height="19" fontSize="13.0" vTextAlign="Middle">
+            <expression><![CDATA[$F{idEvento.cliente.nombre}]]></expression>
+        </element>
+        <element kind="staticText" uuid="46b72cb5-cf05-45ee-8f9c-fe9f4421b3dd" x="30" y="118" width="144" height="19" fontSize="13.0" vTextAlign="Middle">
+            <text><![CDATA[Número de Telefono :
+]]></text>
+        </element>
+        <element kind="textField" uuid="8cfaf8c6-0900-4300-9c3a-630fbe1a7cd0" x="180" y="118" width="360" height="19" fontSize="13.0" vTextAlign="Middle">
+            <expression><![CDATA[$F{idEvento.cliente.telefono}]]></expression>
+        </element>
+        <element kind="staticText" uuid="78dc4957-1d55-46e5-bb56-9d4d8d86b9cc" x="30" y="143" width="144" height="19" fontSize="13.0" vTextAlign="Middle">
+            <text><![CDATA[Correo Electronico :]]></text>
+        </element>
+        <element kind="textField" uuid="8d3af8fb-6231-48f9-9a6f-f91883eb5fd1" x="180" y="143" width="360" height="19" fontSize="13.0" vTextAlign="Middle">
+            <expression><![CDATA[$F{idEvento.cliente.correo}]]></expression>
+        </element>
+        <element kind="staticText" uuid="52764d9d-4764-443f-93b6-2042d960f39e" x="30" y="168" width="144" height="19" fontSize="13.0" vTextAlign="Middle">
+            <text><![CDATA[Dirección :]]></text>
+        </element>
+        <element kind="textField" uuid="dcc9b98f-452b-4f4c-bf52-1575275fb09e" x="180" y="168" width="360" height="19" fontSize="13.0" hTextAlign="Left" vTextAlign="Middle">
+            <expression><![CDATA[$F{idEvento.cliente.direccion}]]></expression>
+        </element>
+        <element kind="staticText" uuid="4334a3a4-2179-4cb5-8fcd-a4090412b384" x="30" y="58" width="90" height="29" fontSize="16.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+            <text><![CDATA[CLIENTE ]]></text>
+        </element>
+        <element kind="textField" uuid="251a6edc-624d-4472-bc2d-f0723b59a005" x="370" y="43" width="167" height="17" fontSize="13.0">
+            <expression><![CDATA["Nro " + "Factura : " + $F{id}]]></expression>
+        </element>
+        <element kind="staticText" uuid="19a9243a-d7d3-45f7-85a5-acd32621eba2" x="30" y="200" width="90" height="29" fontSize="16.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+            <text><![CDATA[EVENTO]]></text>
+        </element>
+        <element kind="staticText" uuid="6c2951a8-b857-4ace-9c86-b6ed984243f8" x="30" y="230" width="70" height="19" fontSize="13.0" vTextAlign="Middle">
+            <text><![CDATA[Nombre :]]></text>
+        </element>
+        <element kind="textField" uuid="55dc7866-42d3-4359-9698-b45a3c7db6c6" x="100" y="230" width="180" height="19" fontSize="13.0" vTextAlign="Middle">
+            <expression><![CDATA[$F{idEvento.nombre}]]></expression>
+        </element>
+        <element kind="textField" uuid="90d61a41-c37e-4f56-80d0-cd8397e78758" x="339" y="230" width="201" height="19" fontSize="13.0" hTextAlign="Right" vTextAlign="Middle">
+            <expression><![CDATA["Fecha : " + $F{idEvento.fecha}]]></expression>
+        </element>
+        <element kind="textField" uuid="356993d5-20b2-424a-b9ef-9ea8ee160376" x="30" y="260" width="250" height="19" fontSize="13.0" vTextAlign="Middle">
+            <expression><![CDATA["Duración : " + $F{idEvento.duracion} + "hora(s)"]]></expression>
+        </element>
+        <element kind="textField" uuid="1c21267e-c552-43a9-9946-619a50f14f1e" x="280" y="260" width="257" height="19" fontSize="13.0" hTextAlign="Right" vTextAlign="Middle">
+            <expression><![CDATA["Establecimiento : " + $F{idEvento.establecimiento.nombre}]]></expression>
+        </element>
+        <element kind="staticText" uuid="1ee9a0bf-c3fe-4d1c-8c75-20e2818803a7" x="30" y="20" width="230" height="29" fontSize="19.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+            <text><![CDATA[PROYECTO X]]></text>
+        </element>
+        <element kind="staticText" uuid="b52e81d6-68b2-410c-91f6-681c850fdd05" x="50" y="321" width="90" height="29" fontSize="16.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+            <text><![CDATA[DETALLE]]></text>
+        </element>
+        <element kind="textField" uuid="4fe2d7f7-f208-40ed-b8f0-38cb04444515" x="80" y="359" width="400" height="19" fontSize="13.0">
+            <expression><![CDATA["Alquiler del local :  + S/" + $F{idEvento.establecimiento.precio}]]></expression>
+        </element>
+        <element kind="textField" uuid="246531f0-4723-4876-903b-a3f3be04842f" x="80" y="381" width="400" height="19" fontSize="13.0">
+            <expression><![CDATA["Sueldo del Personal : + S/" + $F{idEvento.personal.monto}]]></expression>
+        </element>
+        <element kind="textField" uuid="5b8de3fe-5075-4b4d-800c-96ea49afb135" x="81" y="403" width="399" height="20" fontSize="13.0">
+            <expression><![CDATA["Dscto por Octubre : - S/" + ($F{idEvento.monto}.doubleValue() * $F{descuento}) + " (5%)"]]></expression>
+        </element>
+        <element kind="textField" uuid="7cc9883d-2c6e-46bd-9576-1d276020db50" x="80" y="426" width="400" height="19" fontSize="13.0">
+            <expression><![CDATA["IGV : + S/ " + (($F{idEvento.monto}.doubleValue() * 0.95) * 0.18) + " (18%)"]]></expression>
+        </element>
+        <element kind="textField" uuid="d9da0dfd-d011-4e36-9d6a-104e7d4b24e6" x="30" y="290" width="507" height="19" fontSize="13.0">
+            <expression><![CDATA["Dirección : " + $F{idEvento.establecimiento.direccion}]]></expression>
+        </element>
+        <element kind="textField" uuid="ffeb524a-55e2-4a62-9f10-598c7fb1103b" x="80" y="450" width="400" height="19" fontSize="13.0" bold="true">
+            <expression><![CDATA["TOTAL : S/" + $F{precioFinal}]]></expression>
+        </element>
+    </pageHeader>
+    <pageFooter height="32" splitType="Stretch">
+        <element kind="textField" uuid="e5b52328-8e89-4049-a066-530775370b5c" x="460" y="0" width="55" height="32" hTextAlign="Right">
+            <expression><![CDATA["Page " + $V{PAGE_NUMBER}]]></expression>
+        </element>
+        <element kind="textField" uuid="21d98212-16fd-4442-9ee8-cf1d437c9c2f" x="515" y="0" width="55" height="32" evaluationTime="Report" hTextAlign="Left">
+            <expression><![CDATA[" of " + $V{PAGE_NUMBER}]]></expression>
+        </element>
+    </pageFooter>
+</jasperReport>

@@ -3,21 +3,27 @@ package com.cibertec.app.controller;
 import com.cibertec.app.entity.*;
 import com.cibertec.app.service.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.Collections;
 
 @Controller
 public class ClienteController {
@@ -242,16 +248,28 @@ public class ClienteController {
     public String confirmarEvento(@ModelAttribute("factura") Factura factura, HttpServletRequest request, Model model){
         String mensaje = facturaService.agregarFactura(factura);
 
-//        System.out.println("ID:" + factura.getId() + "Fecha:" + factura.getFecha()  + factura.getIdEvento().getIdEvento() + "----------------------");
-
         if(mensaje.contains("Exito")){
             Integer idcliente = (Integer) request.getSession().getAttribute("id");
             model.addAttribute("eventos",eventoService.getEventoByCliente(idcliente));
             return "/Cliente/eventos";
         }
         else{
-            return "confirmarEvento";
+            return "/Cliente/confirmarEvento";
         }
     }
 
+    @GetMapping("/Cliente/exportar/{idFactura}")
+    public void exportarPDF(@PathVariable Integer idFactura, HttpServletResponse response) throws FileNotFoundException, JRException {
+        File file = ResourceUtils.getFile("classpath:ReporteFactura.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Collections.singleton(facturaService.obtenerFacturaID(idFactura)));
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
+        OutputStream outStream = null;
+        try {
+            outStream = response.getOutputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
+    }
 }
