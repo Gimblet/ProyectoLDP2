@@ -90,6 +90,7 @@
             <th>Id Factura</th>
             <th>Descuento</th>
             <th>Precio Final (con IGV)</th>
+            <th>Exportar</th>
         </tr>
         </thead>
         <tbody>
@@ -97,6 +98,12 @@
             <td th:text="${factura.id}"></td>
             <td th:text="${factura.descuento}"></td>
             <td th:text="${factura.precioFinal}"></td>
+            <td>
+                <div class="btn-group">
+                    <a th:href="@{/Cliente/exportar/{idFactura}(idFactura=${factura.id})}"
+                       class="btn btn-primary">Exportar</a>
+                </div>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -268,6 +268,7 @@ public class ClienteController {
 
     @GetMapping("/Cliente/exportar/{idFactura}")
     public void exportarPDF(@PathVariable Integer idFactura, HttpServletResponse response) throws FileNotFoundException, JRException {
+    	System.out.println("aaaaaaaaaaaaaa" + String.valueOf(idFactura));
         File file = ResourceUtils.getFile("classpath:ReporteFactura.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Collections.singleton(facturaService.obtenerFacturaID(idFactura)));
