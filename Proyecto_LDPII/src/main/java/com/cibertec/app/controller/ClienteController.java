@@ -28,6 +28,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class ClienteController {
@@ -151,39 +152,17 @@ public class ClienteController {
             return "/Cliente/createEvento";
         }
 
-        //TODO: al agregar evento sale parseado con un formato
-        setEventoFecha(evento, evento.getFechaString());
+        LocalDateTime parser = LocalDateTime.parse(evento.getFechaString());
+        parser.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh:mm"));
+        evento.setFecha(parser);
         evento.setMonto(calcularMontoEstablecimientoYPersonal(evento));
         eventoService.crearEvento(evento);
-        
-        // Crear la factura
-        /*Factura factura = new Factura();
-        factura.setIdEvento(evento); // Asociar la factura al evento
-        factura.setDescuento(0.05); // Puedes ajustar el descuento si es necesario
-
-        // Calcular el monto final de la factura
-        BigDecimal montoLocalYPersonal = calcularMontoEstablecimientoYPersonal(evento);
-        BigDecimal montoDescuento = obtenerMontoDescuento(montoLocalYPersonal, factura);
-        BigDecimal montoIGV = obtenerMontoIGV(montoLocalYPersonal, montoDescuento);
-        factura.setPrecioFinal(calcularMontoTotal(montoLocalYPersonal, montoDescuento, montoIGV));
-
-        // Guardar la factura
-        facturaService.guardarFactura(factura); // Necesitarás implementar este método en el servicio*/
 
         Integer idcliente = (Integer) request.getSession().getAttribute("id");
         model.addAttribute("eventos", eventoService.getEventoByCliente(idcliente));
         return "Cliente/eventos";
     }
 
-    public void setEventoFecha(Evento evento, String fechaString) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date fecha = formatter.parse(fechaString);
-            evento.setFecha(fecha);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
 
     @GetMapping("/Cliente/eliminarEvento/{id}")
     public String borrarEvento(@PathVariable Integer id, Model model,HttpServletRequest request){
@@ -219,7 +198,7 @@ public class ClienteController {
         BigDecimal montoLocalYPersonal = calcularMontoEstablecimientoYPersonal(evento);
         BigDecimal montoDescuento = obtenerMontoDescuento(montoLocalYPersonal, factura);
         BigDecimal montoIGV = obtenerMontoIGV(montoLocalYPersonal, montoDescuento);
-
+        
         factura.setPrecioFinal(calcularMontoTotal(montoLocalYPersonal,montoDescuento,montoIGV));
         factura.setIdEvento(evento);
 
@@ -280,16 +259,11 @@ public class ClienteController {
 
     @PostMapping("/Cliente/confirmarEvento")
     public String confirmarEvento(@ModelAttribute("factura") Factura factura, HttpServletRequest request, Model model){
-        String mensaje = facturaService.agregarFactura(factura);
+        facturaService.guardarFactura(factura);
+        Integer id = (Integer) request.getSession().getAttribute("id");
+        model.addAttribute("eventos", eventoService.getEventoByCliente(id));
+        return "/Cliente/eventos";
 
-        if(mensaje.contains("Exito")){
-            Integer idcliente = (Integer) request.getSession().getAttribute("id");
-            model.addAttribute("eventos",eventoService.getEventoByCliente(idcliente));
-            return "/Cliente/eventos";
-        }
-        else{
-            return "/Cliente/confirmarEvento";
-        }
     }
 
     @GetMapping("/Cliente/exportar/{idFactura}")

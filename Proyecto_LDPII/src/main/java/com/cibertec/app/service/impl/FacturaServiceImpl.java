@@ -24,7 +24,16 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
-    public Factura obtenerFacturaID(Integer id) {
-        return repo.findById(id).get();
+    public List<Factura> getAllFactura() {
+        return List.of();
     }
-}
+
+    @Override
+    public Factura obtenerFacturaID(Integer id) {
+        return facturaRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Factura> obtenerFacturaByCliente(Integer idCliente) {
+        return facturaRepository.obtenerFacturaByCliente(idCliente);
+    }}

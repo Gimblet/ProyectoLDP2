@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Datos de Facturación - Spring Boot</title>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         body {
             background-image: url('https://img.freepik.com/fotos-premium/fondo-azul-cuadrado-cuadrado-puntos-medio_1122354-16579.jpg');
@@ -14,96 +13,121 @@
             background-position: center;
             color: #fff;
         }
+
         .card {
             background-color: rgb(255 255 255 / 25%);
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
         }
+
         .card h1 {
             font-family: Arial, sans-serif;
             text-align: center;
             color: #8ae1f3;
         }
+
         h3 {
             color: #6c98d6;
         }
+
         .form-group label {
             color: #c6c6c6;
         }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
         }
+
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">Reserva de Eventos</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" th:href="@{/Cliente/eventos}">Eventos</a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/Cliente/facturas}">Facturas</a></li>
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">Reserva de Eventos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/Cliente/eventos}">Eventos</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/Cliente/facturas}">Facturas</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-<div class="container mt-3">
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 mx-auto">
-            <div class="card p-4">
-                <h1>Datos de Facturación</h1>
-                <form th:action="@{/Cliente/createEvento}" th:object="${factura}" method="POST">
-                    <div class="card-body">
-                        <h3>Cliente</h3>
-                        <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" name="nombreCliente" th:value="${cliente.getNombre()}"
-                                   class="form-control" disabled readonly/>
+    </nav>
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 mx-auto">
+                <div class="card p-4">
+                    <h1>Datos de Facturación</h1>
+                    <form th:action="@{/Cliente/confirmarEvento}" th:object="${factura}" method="POST">
+                        <div class="card-body">
+                            <h3>Cliente</h3>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" name="nombreCliente" th:value="${cliente.getNombre()}"
+                                    class="form-control" disabled readonly />
+                            </div>
+                            <div class="form-group">
+                                <label>Correo</label>
+                                <input type="text" name="correoCliente" th:value="${cliente.getCorreo()}"
+                                    class="form-control" disabled readonly />
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="text" name="telefonoCliente" th:value="${cliente.getTelefono()}"
+                                    class="form-control" disabled readonly />
+                            </div>
+                            <h3>Evento</h3>
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" name="nombreEvento" th:value="${evento.getNombre()}"
+                                    class="form-control" disabled readonly />
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha</label>
+                                <input type="datetime-local" name="fechaEvento" th:value="${evento.getFecha()}"
+                                    class="form-control" disabled readonly />
+                            </div>
+                            <div class="form-group">
+                                <label>Monto</label>
+                                <input type="text" name="montoEvento" th:value="${evento.getMonto()}"
+                                    class="form-control" disabled readonly />
+                            </div>
+
+                            <div class="form-group">
+                                <input style="display: none" type="text" name="idEvento" th:field="*{idEvento}"
+                                    th:value="*{idEvento}" class="form-control" readonly />
+                            </div>
+
+                            <div class="form-group">
+                                <input style="display: none" type="number" name="descuento" th:field="*{descuento}"
+                                    th:value="*{descuento}" class="form-control" readonly />
+                            </div>
+
+                            <div class="form-group">
+                                <input style="display: none" type="number" name="precioFinal" th:field="*{precioFinal}"
+                                    th:value="*{precioFinal}" class="form-control" readonly />
+                            </div>
+
+                            <div class="btn-group mt-3">
+                                <a class="btn btn-secondary" th:href="@{/Cliente/eventos}">Volver</a>
+                                <button type="submit" class="btn btn-primary">Confirmar</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Correo</label>
-                            <input type="text" name="correoCliente" th:value="${cliente.getCorreo()}"
-                                   class="form-control" disabled readonly/>
-                        </div>
-                        <div class="form-group">
-                            <label>Teléfono</label>
-                            <input type="text" name="telefonoCliente" th:value="${cliente.getTelefono()}"
-                                   class="form-control" disabled readonly/>
-                        </div>
-                        <h3>Evento</h3>
-                        <div class="form-group">
-                            <label>Nombre</label>
-                            <input type="text" name="nombreEvento" th:value="${evento.getNombre()}"
-                                   class="form-control" disabled readonly/>
-                        </div>
-                        <div class="form-group">
-                            <label>Fecha</label>
-                            <input type="date" name="fechaEvento" th:value="${evento.getFecha()}"
-                                   class="form-control" disabled readonly/>
-                        </div>
-                        <div class="form-group">
-                            <label>Monto</label>
-                            <input type="text" name="montoEvento" th:value="${evento.getMonto()}"
-                                   class="form-control" disabled readonly/>
-                        </div>
-                        <div class="btn-group mt-3">
-                            <a class="btn btn-secondary" th:href="@{/Cliente/eventos}">Volver</a>
-                            <a th:href="@{/Cliente/eventos}" class="btn btn-primary">Confirmar</a>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </body>
+
 </html>
