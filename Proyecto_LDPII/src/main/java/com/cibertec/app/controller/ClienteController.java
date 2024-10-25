@@ -1,7 +1,11 @@
 package com.cibertec.app.controller;
 
 import com.cibertec.app.entity.*;
-import com.cibertec.app.service.*;
+import com.cibertec.app.service.ClienteService;
+import com.cibertec.app.service.EstablecimientoService;
+import com.cibertec.app.service.EventoService;
+import com.cibertec.app.service.FacturaService;
+import com.cibertec.app.service.PersonalService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.*;
@@ -39,7 +43,7 @@ public class ClienteController {
 
     @Autowired
     EstablecimientoService establecimientoService;
-
+    
     @Autowired
     FacturaService facturaService;
 
@@ -147,16 +151,38 @@ public class ClienteController {
             return "/Cliente/createEvento";
         }
 
-        LocalDateTime parser = LocalDateTime.parse(evento.getFechaString());
-        parser.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-hh:mm"));
-        evento.setFecha(parser);
+        //TODO: al agregar evento sale parseado con un formato
+        setEventoFecha(evento, evento.getFechaString());
         evento.setMonto(calcularMontoEstablecimientoYPersonal(evento));
         eventoService.crearEvento(evento);
-        evento.setMonto(calcularMontoEstablecimientoYPersonal(evento));
+        
+        // Crear la factura
+        /*Factura factura = new Factura();
+        factura.setIdEvento(evento); // Asociar la factura al evento
+        factura.setDescuento(0.05); // Puedes ajustar el descuento si es necesario
+
+        // Calcular el monto final de la factura
+        BigDecimal montoLocalYPersonal = calcularMontoEstablecimientoYPersonal(evento);
+        BigDecimal montoDescuento = obtenerMontoDescuento(montoLocalYPersonal, factura);
+        BigDecimal montoIGV = obtenerMontoIGV(montoLocalYPersonal, montoDescuento);
+        factura.setPrecioFinal(calcularMontoTotal(montoLocalYPersonal, montoDescuento, montoIGV));
+
+        // Guardar la factura
+        facturaService.guardarFactura(factura); // Necesitarás implementar este método en el servicio*/
 
         Integer idcliente = (Integer) request.getSession().getAttribute("id");
-        model.addAttribute("eventos",eventoService.getEventoByCliente(idcliente));
+        model.addAttribute("eventos", eventoService.getEventoByCliente(idcliente));
         return "Cliente/eventos";
+    }
+
+    public void setEventoFecha(Evento evento, String fechaString) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date fecha = formatter.parse(fechaString);
+            evento.setFecha(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @GetMapping("/Cliente/eliminarEvento/{id}")
@@ -166,7 +192,7 @@ public class ClienteController {
         model.addAttribute("eventos", eventoService.getEventoByCliente(idCliente));
         return "/Cliente/eventos";
     }
-
+    
     @GetMapping("/Cliente/detallesEvento/{id}")
     public String detallesEvento(@PathVariable Integer id, Model model){
         Evento detalle = eventoService.buscarEventoById(id);
@@ -208,6 +234,14 @@ public class ClienteController {
 
         return "/Cliente/confirmarEvento";
     }
+    
+    @GetMapping("/Cliente/facturas")
+    public String listarFacturas(HttpServletRequest request, Model model) {
+        Integer id = (Integer) request.getSession().getAttribute("id");
+        List<Factura> facturas = facturaService.obtenerFacturaByCliente(id);
+        model.addAttribute("facturas", facturas);
+        return "/Cliente/facturas"; 
+    }    
 
     public BigDecimal obtenerMontoLocal(Evento evento){
         Establecimiento local = evento.getEstablecimiento();

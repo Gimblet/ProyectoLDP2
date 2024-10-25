@@ -2,7 +2,7 @@ package com.cibertec.app.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -28,10 +28,11 @@ public class Evento implements Serializable {
 	@Transient
 	private String fechaString;
 
+	@Temporal(TemporalType.DATE)
 	@Basic(optional = false)
 	@DateTimeFormat(pattern = "MM-dd-yyyy")
 	@Column(name = "fechaEvento")
-	private LocalDateTime fecha;
+	private Date fecha;
 
 	@Basic(optional = false)
 	@Column(name = "horasEvento")
