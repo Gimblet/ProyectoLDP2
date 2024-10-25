@@ -2,11 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Spring Boot</title>
+    <title>Crear Nuevo Evento - Spring Boot</title>
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/fotos-premium/fondo-azul-cuadrado-cuadrado-puntos-medio_1122354-16579.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
+        .card {
+            background-color: rgb(255 255 255 / 25%);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: #8ae1f3;
+        }
+
+        .form-group label {
+            color: #c6c6c6;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,7 +59,7 @@
                     <a class="nav-link" th:href="@{/Cliente/eventos}">Eventos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/contrato}">Contratos</a>
+                    <a class="nav-link" th:href="@{/Cliente/facturas}">Facturas</a>
                 </li>
             </ul>
         </div>
@@ -32,64 +67,66 @@
 </nav>
 <div class="container mt-3">
     <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-            <h1 class = "text-center"> Crear Nuevo Evento</h1>
-            <div class="card-body">
-                <form th:action="@{/Cliente/createEvento}" th:object="${evento}" method="POST">
-                    <div class="form-group">
-                        <label>Nombre del Evento</label>
-                        <input type="text" name="nombreEvento" th:field="*{nombre}"
-                               class="form-control"
-                               placeholder="Ingresar Nombre del Evento" />
-                        <p th:errors="*{nombre}" class="text-danger"
-                           th:if="${#fields.hasErrors('nombre')}"></p>
-                    </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center">
+            <div class="card p-4">
+                <h1>Crear Nuevo Evento</h1>
+                <div class="card-body">
+                    <form th:action="@{/Cliente/createEvento}" th:object="${evento}" method="POST">
+                        <div class="form-group">
+                            <label>Nombre del Evento</label>
+                            <input type="text" name="nombreEvento" th:field="*{nombre}"
+                                   class="form-control"
+                                   placeholder="Ingresar Nombre del Evento" />
+                            <p th:errors="*{nombre}" class="text-danger"
+                               th:if="${#fields.hasErrors('nombre')}"></p>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Fecha del Evento</label>
-                        <input type="datetime-local" name="fechaEvento" th:field="*{fechaString}"
-                               class="form-control"
-                               placeholder="Seleccione la fecha del evento" />
-                        <p th:errors="*{fechaString}" class="text-danger"
-                           th:if="${#fields.hasErrors('fechaString')}"></p>
-                    </div>
+                        <div class="form-group">
+                            <label>Fecha del Evento</label>
+                            <input type="date" name="fechaEvento" th:field="*{fechaString}"
+                                   class="form-control"
+                                   placeholder="Seleccione la fecha del evento" />
+                            <p th:errors="*{fechaString}" class="text-danger"
+                               th:if="${#fields.hasErrors('fechaString')}"></p>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Duración del Evento (Horas)</label>
-                        <input type="number" name="horasEvento" th:field="*{duracion}"
-                               class="form-control"
-                               placeholder="Ingrese cuantas horas durará el evento" />
-                        <p th:errors="*{duracion}" class="text-danger"
-                           th:if="${#fields.hasErrors('duracion')}"></p>
-                    </div>
+                        <div class="form-group">
+                            <label>Duración del Evento (Horas)</label>
+                            <input type="number" name="horasEvento" th:field="*{duracion}"
+                                   class="form-control"
+                                   placeholder="Ingrese cuantas horas durará el evento" />
+                            <p th:errors="*{duracion}" class="text-danger"
+                               th:if="${#fields.hasErrors('duracion')}"></p>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Seleccionar Personal</label>
-                        <select th:field="*{personal}" name="idPersonal" class="form-control">
-                            <option th:each="personal :${personalList}" th:value="${personal.id}" th:text="${personal.nombre}" />
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>Seleccionar Personal</label>
+                            <select th:field="*{personal}" name="idPersonal" class="form-control">
+                                <option th:each="personal :${personalList}" th:value="${personal.id}" th:text="${personal.nombre}" />
+                            </select>
+                        </div>
 
-                    <div class="form-group">
-                        <label>Seleccionar Local</label>
-                        <select th:field="*{establecimiento}" name="idEstablecimiento" class="form-control">
-                            <option th:each="establecimiento :${establecimientoList}" th:value="${establecimiento.id}" th:text="${establecimiento.nombre}" />
-                        </select>
-                    </div>
+                        <div class="form-group">
+                            <label>Seleccionar Local</label>
+                            <select th:field="*{establecimiento}" name="idEstablecimiento" class="form-control">
+                                <option th:each="establecimiento :${establecimientoList}" th:value="${establecimiento.id}" th:text="${establecimiento.nombre}" />
+                            </select>
+                        </div>
 
-                    <div class="form-group" style="display: none">
-                        <label>Id</label>
-                        <input type="text" name="idCliente" th:field="*{cliente}"
-                               class="form-control" th:value="*{cliente}"
-                               placeholder="Ingresar Id" />
-                        <p th:errors="*{cliente}" class="text-danger"
-                           th:if="${#fields.hasErrors('cliente')}"></p>
-                    </div>
+                        <div class="form-group" style="display: none">
+                            <label>Id</label>
+                            <input type="text" name="idCliente" th:field="*{cliente}"
+                                   class="form-control" th:value="*{cliente}"
+                                   placeholder="Ingresar Id" />
+                            <p th:errors="*{cliente}" class="text-danger"
+                               th:if="${#fields.hasErrors('cliente')}"></p>
+                        </div>
 
-                    <div class="box-footer">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -2,12 +2,48 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registrar Cliente </title>
+    <title>Registrar Cliente</title>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
             crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url('https://img.freepik.com/fotos-premium/fondo-azul-cuadrado-cuadrado-puntos-medio_1122354-16579.jpg');
+            background-size: cover; /* Cubrir todo el fondo */
+            background-position: center; /* Centrar la imagen de fondo */
+            height: 100vh; /* Altura de la ventana del navegador */
+            margin: 0; /* Elimina el margen */
+        }
+
+        .card {
+            backdrop-filter: blur(10px); /* Desenfoque del fondo */
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
+            border-radius: 15px; /* Bordes redondeados */
+            padding: 20px; /* Espaciado interno */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra */
+            margin-top: 60px; /* Espaciado superior para el nav */
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Color primario */
+            border-color: #007bff; /* Color del borde */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Color al pasar el mouse */
+            border-color: #0056b3; /* Color del borde al pasar el mouse */
+        }
+
+        .alert {
+            border-radius: 5px; /* Bordes redondeados para las alertas */
+        }
+
+        .text-danger {
+            font-size: 0.9em; /* Tamaño de fuente para mensajes de error */
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -22,7 +58,6 @@
     </div>
 </nav>
 <br/>
-<br/>
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3">
@@ -31,7 +66,7 @@
             </div>
             <div th:if="${param.success}">
                 <div class="alert alert-info">
-                    Te has registrado con exito es nuestra aplicación.!
+                    Te has registrado con éxito en nuestra aplicación.
                 </div>
             </div>
             <div class="card">
@@ -66,7 +101,7 @@
                         <div class="form-group mb-3">
                             <label class="control-label">Clave</label>
                             <input type="password"
-                                   id="claveCliente" name="claveCLiente"
+                                   id="claveCliente" name="claveCliente"
                                    class="form-control"
                                    placeholder="Ingresar Clave"
                                    th:field="*{clave}"/>
@@ -75,22 +110,22 @@
                         </div>
 
                         <div class="form-group mb-3">
-                            <label class="control-label">Telefono</label>
+                            <label class="control-label">Teléfono</label>
                             <input type="text"
-                                   id="telefonoCliente" name="telefonoCLiente"
+                                   id="telefonoCliente" name="telefonoCliente"
                                    class="form-control"
-                                   placeholder="Ingresar Clave"
+                                   placeholder="Ingresar Teléfono"
                                    th:field="*{telefono}"/>
                             <p th:errors="*{telefono}" class="text-danger"
                                th:if="${#fields.hasErrors('telefono')}"></p>
                         </div>
 
                         <div class="form-group mb-3">
-                            <label class="control-label">Direccion</label>
+                            <label class="control-label">Dirección</label>
                             <input type="text"
                                    id="direccion" name="direccion"
                                    class="form-control"
-                                   placeholder="Ingresar direccion"
+                                   placeholder="Ingresar Dirección"
                                    th:field="*{direccion}"/>
                             <p th:errors="*{direccion}" class="text-danger"
                                th:if="${#fields.hasErrors('direccion')}"></p>

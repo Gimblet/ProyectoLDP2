@@ -5,31 +5,26 @@ import com.cibertec.app.repository.FacturaRepository;
 import com.cibertec.app.service.FacturaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class FacturaServiceImpl implements FacturaService {
 
-    FacturaRepository repo;
+    @Autowired
+    FacturaRepository facturaRepository;
 
-    public FacturaServiceImpl(FacturaRepository repo) {
-        this.repo = repo;
+    @Override
+    public List<Factura> getFacturaByEvento(Integer idEvento) {
+        return null;
     }
 
     @Override
-    public List<Factura> getAllFactura() {
-        return repo.findAll();
+    public void guardarFactura(Factura factura) {
+        facturaRepository.save(factura);
     }
 
-    @Override
-    public String agregarFactura(Factura factura) {
-        try{
-            repo.save(factura);
-            return "Factura Agregada con Exito";
-        } catch(Exception e){
-            e.printStackTrace();
-            return "Error";
-        }
-    }
+	@Override
+	public List<Factura> obtenerFacturaByCliente(Integer idCliente) {
+		return facturaRepository.obtenerFacturaByCliente(idCliente);
+	}
 }
