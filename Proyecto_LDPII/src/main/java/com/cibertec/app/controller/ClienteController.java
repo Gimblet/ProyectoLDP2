@@ -114,6 +114,12 @@ public class ClienteController {
         model.addAttribute("eventos", eventoService.getEventoByCliente(id));
         return "/Cliente/eventos";
     }
+    
+    @GetMapping("/Cliente/cerrarSesion")
+    public String cerrarSesion(HttpServletRequest request) {
+    	request.getSession().invalidate();
+    	return "index";
+    }
 
     @GetMapping("/Cliente/preCreateEvento")
     public String preCreateEvento(Model model, HttpServletRequest request) {
@@ -268,7 +274,6 @@ public class ClienteController {
 
     @GetMapping("/Cliente/exportar/{idFactura}")
     public void exportarPDF(@PathVariable Integer idFactura, HttpServletResponse response) throws FileNotFoundException, JRException {
-    	System.out.println("aaaaaaaaaaaaaa" + String.valueOf(idFactura));
         File file = ResourceUtils.getFile("classpath:ReporteFactura.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Collections.singleton(facturaService.obtenerFacturaID(idFactura)));
