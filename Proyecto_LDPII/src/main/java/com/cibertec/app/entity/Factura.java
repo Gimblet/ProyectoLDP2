@@ -5,15 +5,17 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+@Entity
 @Getter
 @Setter
-@Entity
 @DynamicInsert
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "factura")
 public class Factura implements Serializable {
 
@@ -22,10 +24,10 @@ public class Factura implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idFactura", nullable = false)
-	private Integer id;
+	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "idEvento")
+	@OneToOne
+	@JoinColumn(name = "idEvento", unique = true)
 	private Evento idEvento;
 
 	@Column(name = "descuento")
@@ -35,9 +37,7 @@ public class Factura implements Serializable {
 	@Column(name = "fecha")
 	private LocalDate fecha;
 
-	@Column(name = "precioFinal", precision = 8, scale = 2)
+	@Column(name = "precioFinal", precision = 10, scale = 2)
 	private BigDecimal precioFinal;
 
-	public Factura() {
-	}
 }

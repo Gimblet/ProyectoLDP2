@@ -1,15 +1,18 @@
 package com.cibertec.app.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "contrato")
 public class Contrato implements Serializable {
 
@@ -17,7 +20,7 @@ public class Contrato implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idContrato;
+	private Long idContrato;
 
 	@ManyToOne
 	@JoinColumn(name = "idCliente")
@@ -29,8 +32,6 @@ public class Contrato implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Basic(optional = false)
-	private Date fechaEvento;
+	private LocalDate fechaEvento;
 
-	public Contrato() {
-	}
 }

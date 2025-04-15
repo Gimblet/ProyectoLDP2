@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "Establecimiento")
 public class Establecimiento implements Serializable {
 
@@ -18,7 +20,7 @@ public class Establecimiento implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idEstablecimiento", nullable = false)
-	private Integer id;
+	private Long id;
 
 	@Column(name = "Nombre_establecimiento", length = 50)
 	private String nombre;
@@ -26,9 +28,6 @@ public class Establecimiento implements Serializable {
 	@Column(name = "Direccion", nullable = false, length = 100)
 	private String direccion;
 
-	@Column(name = "Precio_alquiler", precision = 10)
+	@Column(name = "Precio_alquiler", precision = 10, scale = 2)
 	private BigDecimal precio;
-
-	public Establecimiento() {
-	}
 }

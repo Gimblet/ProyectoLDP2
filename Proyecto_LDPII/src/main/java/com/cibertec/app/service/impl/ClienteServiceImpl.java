@@ -23,7 +23,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente getClienteById(Integer id) {
+    public Cliente getClienteById(Long id) {
         return clienteRepository.findById(id).get();
     }
 

@@ -10,8 +10,8 @@ import com.cibertec.app.entity.Evento;
 import java.util.List;
 
 @Repository
-public interface EventoRepository extends JpaRepository<Evento, Integer> {
+public interface EventoRepository extends JpaRepository<Evento, Long> {
 
     @Query(value = "SELECT e.idEvento, e.nombreEvento, e.fechaEvento, e.horasEvento, e.montoEvento, e.idPersonal, e.idEstablecimiento, e.idCliente FROM evento e WHERE e.idCliente = :idcliente", nativeQuery = true)
-    public List<Evento> findEventosByCliente(@Param("idcliente") Integer idCliente);
+    public List<Evento> findEventosByCliente(@Param("idcliente") Long idCliente);
 }

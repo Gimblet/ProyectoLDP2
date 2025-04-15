@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface ClienteService {
 	public List<Cliente> getAllCliente();
 
-	public Cliente getClienteById(Integer id);
+	public Cliente getClienteById(Long id);
 
 	public Cliente getClienteByEmail(String email);
 

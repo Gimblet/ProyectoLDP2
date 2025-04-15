@@ -100,7 +100,7 @@ public class ClienteController {
         boolean resultado = clienteService.login(cliente, request);
 
         if (resultado) {
-            Integer id = (Integer) request.getSession().getAttribute("id");
+            Long id = (Long) request.getSession().getAttribute("id");
             model.addAttribute("eventos", eventoService.getEventoByCliente(id));
             return "/Cliente/eventos";
         } else {
@@ -110,7 +110,7 @@ public class ClienteController {
 
     @GetMapping("/Cliente/eventos")
     public String listarEventos(HttpServletRequest request, Model model) {
-        Integer id = (Integer) request.getSession().getAttribute("id");
+        Long id = (Long) request.getSession().getAttribute("id");
         model.addAttribute("eventos", eventoService.getEventoByCliente(id));
         return "/Cliente/eventos";
     }
@@ -123,7 +123,7 @@ public class ClienteController {
 
     @GetMapping("/Cliente/preCreateEvento")
     public String preCreateEvento(Model model, HttpServletRequest request) {
-        Integer id = (Integer) request.getSession().getAttribute("id");
+        Long id = (Long) request.getSession().getAttribute("id");
         Evento evento = new Evento();
         Cliente cliente = new Cliente();
 
@@ -164,22 +164,22 @@ public class ClienteController {
         evento.setMonto(calcularMontoEstablecimientoYPersonal(evento));
         eventoService.crearEvento(evento);
 
-        Integer idcliente = (Integer) request.getSession().getAttribute("id");
+        Long idcliente = (Long) request.getSession().getAttribute("id");
         model.addAttribute("eventos", eventoService.getEventoByCliente(idcliente));
         return "Cliente/eventos";
     }
 
 
     @GetMapping("/Cliente/eliminarEvento/{id}")
-    public String borrarEvento(@PathVariable Integer id, Model model,HttpServletRequest request){
+    public String borrarEvento(@PathVariable Long id, Model model,HttpServletRequest request){
         eventoService.deleteEvento(id);
-        Integer idCliente = (Integer) request.getSession().getAttribute("id");
+        Long idCliente = (Long) request.getSession().getAttribute("id");
         model.addAttribute("eventos", eventoService.getEventoByCliente(idCliente));
         return "/Cliente/eventos";
     }
     
     @GetMapping("/Cliente/detallesEvento/{id}")
-    public String detallesEvento(@PathVariable Integer id, Model model){
+    public String detallesEvento(@PathVariable Long id, Model model){
         Evento detalle = eventoService.buscarEventoById(id);
         Personal personal = detalle.getPersonal();
         Establecimiento establecimiento = detalle.getEstablecimiento();
@@ -190,7 +190,7 @@ public class ClienteController {
     }
 
     @GetMapping("/Cliente/preConfirmarEvento/{id}")
-    public String preConfirmEvento(@PathVariable Integer id, Model model){
+    public String preConfirmEvento(@PathVariable Long id, Model model){
         Factura factura = new Factura();
 
         Evento evento = eventoService.buscarEventoById(id);
@@ -222,7 +222,7 @@ public class ClienteController {
     
     @GetMapping("/Cliente/facturas")
     public String listarFacturas(HttpServletRequest request, Model model) {
-        Integer id = (Integer) request.getSession().getAttribute("id");
+        Long id = (Long) request.getSession().getAttribute("id");
         List<Factura> facturas = facturaService.obtenerFacturaByCliente(id);
         model.addAttribute("facturas", facturas);
         return "/Cliente/facturas"; 
@@ -266,14 +266,14 @@ public class ClienteController {
     @PostMapping("/Cliente/confirmarEvento")
     public String confirmarEvento(@ModelAttribute("factura") Factura factura, HttpServletRequest request, Model model){
         facturaService.guardarFactura(factura);
-        Integer id = (Integer) request.getSession().getAttribute("id");
+        Long id = (Long) request.getSession().getAttribute("id");
         model.addAttribute("eventos", eventoService.getEventoByCliente(id));
         return "/Cliente/eventos";
 
     }
 
     @GetMapping("/Cliente/exportar/{idFactura}")
-    public void exportarPDF(@PathVariable Integer idFactura, HttpServletResponse response) throws FileNotFoundException, JRException {
+    public void exportarPDF(@PathVariable Long idFactura, HttpServletResponse response) throws FileNotFoundException, JRException {
         File file = ResourceUtils.getFile("classpath:ReporteFactura.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Collections.singleton(facturaService.obtenerFacturaID(idFactura)));

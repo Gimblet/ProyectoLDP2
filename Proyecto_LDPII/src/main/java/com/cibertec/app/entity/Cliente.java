@@ -3,12 +3,14 @@ package com.cibertec.app.entity;
 import java.io.Serializable;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "cliente")
 public class Cliente implements Serializable {
 
@@ -17,25 +19,21 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idCliente")
-	private Integer idCliente;
+	private Long idCliente;
 
-	@Column(name = "nombreCliente")
-	@Basic(optional = false)
+	@Column(name = "nombreCliente", nullable = false)
 	private String nombre;
 
-	@Column(name = "correoCliente")
-	@Basic(optional = false)
+	@Column(name = "correoCliente", nullable = false)
 	private String correo;
 
 	@Column(name = "claveCliente", nullable = false, length = 100)
 	private String clave;
 
-	@Column(name = "telefonoCliente")
-	@Basic(optional = false)
+	@Column(name = "telefonoCliente", nullable = false)
 	private String telefono;
 
-	@Column(name = "direccion")
-	@Basic(optional = false)
+	@Column(name = "direccion", nullable = false)
 	private String direccion;
 
 	public Cliente(String nombre, String correo, String clave, String telefono, String direccion) {
@@ -44,9 +42,5 @@ public class Cliente implements Serializable {
 		this.clave = clave;
 		this.telefono = telefono;
 		this.direccion = direccion;
-	}
-
-	public Cliente() {
-
 	}
 }

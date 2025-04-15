@@ -14,7 +14,7 @@ public class FacturaServiceImpl implements FacturaService {
     FacturaRepository facturaRepository;
 
     @Override
-    public List<Factura> getFacturaByEvento(Integer idEvento) {
+    public List<Factura> getFacturaByEvento(Long idEvento) {
         return null;
     }
 
@@ -29,11 +29,11 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
     @Override
-    public Factura obtenerFacturaID(Integer id) {
+    public Factura obtenerFacturaID(Long id) {
         return facturaRepository.findById(id).get();
     }
 
     @Override
-    public List<Factura> obtenerFacturaByCliente(Integer idCliente) {
+    public List<Factura> obtenerFacturaByCliente(Long idCliente) {
         return facturaRepository.obtenerFacturaByCliente(idCliente);
     }}
