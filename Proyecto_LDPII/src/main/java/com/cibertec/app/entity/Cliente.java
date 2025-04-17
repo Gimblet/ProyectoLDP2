@@ -19,28 +19,20 @@ public class Cliente implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idCliente")
-	private Long idCliente;
+	private Long id;
 
-	@Column(name = "nombreCliente", nullable = false)
+	@Column(name = "nombreCliente", nullable = false, length = 100)
 	private String nombre;
 
-	@Column(name = "correoCliente", nullable = false)
+	@Column(name = "correoCliente", nullable = false, length = 200)
 	private String correo;
 
 	@Column(name = "claveCliente", nullable = false, length = 100)
 	private String clave;
 
-	@Column(name = "telefonoCliente", nullable = false)
+	@Column(name = "telefonoCliente", nullable = false, length = 9)
 	private String telefono;
 
-	@Column(name = "direccion", nullable = false)
+	@Column(name = "direccion", nullable = false, length = 150)
 	private String direccion;
-
-	public Cliente(String nombre, String correo, String clave, String telefono, String direccion) {
-		this.nombre = nombre;
-		this.correo = correo;
-		this.clave = clave;
-		this.telefono = telefono;
-		this.direccion = direccion;
-	}
 }
