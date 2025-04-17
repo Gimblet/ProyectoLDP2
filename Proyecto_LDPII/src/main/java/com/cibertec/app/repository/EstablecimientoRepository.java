@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.cibertec.app.entity.Establecimiento;
 
 @Repository
-public interface EstablecimientoRepository extends JpaRepository<Establecimiento, Integer> {
+public interface EstablecimientoRepository extends JpaRepository<Establecimiento, Long> {
 
 }

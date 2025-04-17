@@ -30,7 +30,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public List<Evento> getEventoByCliente(Integer idCLiente) {
+    public List<Evento> getEventoByCliente(Long idCLiente) {
         return eventoRepository.findEventosByCliente(idCLiente);
     }
 
@@ -40,13 +40,13 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public String deleteEvento(Integer idEvento) {
+    public String deleteEvento(Long idEvento) {
         eventoRepository.deleteById(idEvento);
         return  "Evento " + String.valueOf(idEvento) + "Eliminado";
     }
     
     @Override
-    public Evento buscarEventoById(Integer id) {
+    public Evento buscarEventoById(Long id) {
         return eventoRepository.findById(id).get();
     }
 }

@@ -6,11 +6,11 @@ import java.util.List;
 public interface FacturaService {
     public List<Factura> getAllFactura();
 
-    public Factura obtenerFacturaID(Integer id);
+    public Factura obtenerFacturaID(Long id);
 
-    public List<Factura> obtenerFacturaByCliente(Integer idCliente);
+    public List<Factura> obtenerFacturaByCliente(Long idCliente);
 
-    public List<Factura> getFacturaByEvento(Integer idEvento);
+    public List<Factura> getFacturaByEvento(Long idEvento);
 
     public void guardarFactura(Factura factura);
 }

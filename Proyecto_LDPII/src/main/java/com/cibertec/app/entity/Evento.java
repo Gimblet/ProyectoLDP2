@@ -7,13 +7,15 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "evento")
 public class Evento implements Serializable {
 
@@ -21,7 +23,7 @@ public class Evento implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idEvento;
+	private Long idEvento;
 
 	@Basic(optional = false)
 	@Column(name = "nombreEvento")
@@ -30,17 +32,14 @@ public class Evento implements Serializable {
 	@Transient
 	private String fechaString;
 
-	@Basic(optional = false)
-	@Column(name = "fechaEvento")
+	@Column(name = "fechaEvento", nullable = false)
 	@DateTimeFormat(pattern = "MM-dd-yyyy")
 	private LocalDateTime fecha;
 
-	@Basic(optional = false)
-	@Column(name = "horasEvento")
+	@Column(name = "horasEvento", nullable = false)
 	private int duracion;
 
-	@Basic(optional = false)
-	@Column(name = "montoEvento")
+	@Column(name = "montoEvento", nullable = false, precision = 10, scale = 2)
 	private BigDecimal monto;
 
 	@ManyToOne
@@ -55,6 +54,4 @@ public class Evento implements Serializable {
 	@JoinColumn(name = "idCliente")
 	private Cliente cliente;
 
-	public Evento() {
-	}
 }
