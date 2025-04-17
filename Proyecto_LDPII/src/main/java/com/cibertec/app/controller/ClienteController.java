@@ -127,7 +127,7 @@ public class ClienteController {
         Evento evento = new Evento();
         Cliente cliente = new Cliente();
 
-        cliente.setIdCliente(id);
+        cliente.setId(id);
         evento.setCliente(cliente);
 
         model.addAttribute("evento", evento);

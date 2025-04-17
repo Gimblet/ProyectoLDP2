@@ -39,8 +39,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente saveCliente(Cliente cliente) {
-        Cliente usuario = new Cliente(cliente.getNombre(), cliente.getCorreo(), cliente.getClave(), cliente.getTelefono(), cliente.getDireccion());
-        return clienteRepository.save(usuario);
+        return clienteRepository.save(cliente);
     }
 
     @Override
@@ -50,7 +49,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         if(entidad != null){
             ingresado = true;
-            request.getSession().setAttribute("id", entidad.getIdCliente());
+            request.getSession().setAttribute("id", entidad.getId());
         }
 
         System.out.println(request.getSession().getAttribute("id"));
