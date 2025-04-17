@@ -23,7 +23,7 @@ public class Factura implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idFactura", nullable = false)
+	@Column(name = "idFactura")
 	private Long id;
 
 	@OneToOne
