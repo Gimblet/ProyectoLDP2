@@ -1,13 +1,13 @@
-drop DATABASE alex_fiestas;
-create database alex_fiestas;
-use alex_fiestas;
+DROP DATABASE IF EXISTS alex_fiestas;
+CREATE DATABASE alex_fiestas;
+USE alex_fiestas;
 
 create table personal
 (
 idPersonal bigint auto_increment primary key,
-nombrePersonal varchar(100),
-montoPersonal decimal(8,2),
-rolPersonal varchar(100)
+nombrePersonal varchar(100) not null,
+montoPersonal decimal(10,2) not null,
+rolPersonal varchar(100) not null
 );
 
 create table cliente

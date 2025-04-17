@@ -22,13 +22,13 @@ public class Personal implements Serializable {
     @Column(name = "idPersonal")
     private Long id;
 
-    @Column(name = "nombrePersonal", length = 100)
+    @Column(name = "nombrePersonal", length = 100, nullable = false)
     private String nombre;
 
-    @Column(name = "montoPersonal", precision = 10, scale = 2)
+    @Column(name = "montoPersonal", precision = 10, scale = 2, nullable = false)
     private BigDecimal monto;
 
-    @Column(name = "rolPersonal", length = 100)
+    @Column(name = "rolPersonal", length = 100, nullable = false)
     private String rol;
 
 }
