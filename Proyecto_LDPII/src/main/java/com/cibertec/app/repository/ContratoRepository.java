@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.cibertec.app.entity.Contrato;
 
-@Repository
 public interface ContratoRepository extends JpaRepository<Contrato, Long> {
 
 }
