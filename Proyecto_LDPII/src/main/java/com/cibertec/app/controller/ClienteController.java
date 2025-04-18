@@ -206,10 +206,11 @@ public class ClienteController {
         BigDecimal montoIGV = obtenerMontoIGV(montoLocalYPersonal, montoDescuento);
         
         factura.setPrecioFinal(calcularMontoTotal(montoLocalYPersonal,montoDescuento,montoIGV));
-        factura.setIdEvento(evento);
+        factura.setEvento(evento);
 
         model.addAttribute("evento", evento);
-        model.addAttribute("cliente", cliente);
+        model.addAttribute("idEvento", evento.getIdEvento());
+        model.addAttribute("cliente", evento.getCliente());
         model.addAttribute("personal", personal);
         model.addAttribute("establecimiento", establecimiento);
         model.addAttribute("montoLocal", montoLocal);

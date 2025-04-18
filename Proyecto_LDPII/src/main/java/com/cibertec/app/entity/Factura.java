@@ -28,7 +28,7 @@ public class Factura implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "idEvento", unique = true)
-	private Evento idEvento;
+	private Evento evento;
 
 	@Column(name = "descuento")
 	private Double descuento;
