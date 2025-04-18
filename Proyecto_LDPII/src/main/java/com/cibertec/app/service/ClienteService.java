@@ -2,11 +2,13 @@ package com.cibertec.app.service;
 
 import java.util.List;
 
+import com.cibertec.app.dto.ClienteRequestDTO;
+import com.cibertec.app.dto.ClienteResponseDTO;
 import com.cibertec.app.entity.Cliente;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface ClienteService {
-	public List<Cliente> getAllCliente();
+	public List<ClienteResponseDTO> getAllCliente();
 
 	public Cliente getClienteById(Long id);
 
@@ -14,7 +16,7 @@ public interface ClienteService {
 
 	public Cliente getClienteByTelefono(String telefono);
 
-	public Cliente saveCliente(Cliente cliente);
+	public ClienteResponseDTO saveCliente(ClienteRequestDTO requestDTO);
 
 	public boolean login(Cliente cliente, HttpServletRequest request);
 }

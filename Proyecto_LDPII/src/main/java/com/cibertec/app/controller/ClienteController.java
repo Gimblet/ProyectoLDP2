@@ -1,5 +1,6 @@
 package com.cibertec.app.controller;
 
+import com.cibertec.app.dto.ClienteRequestDTO;
 import com.cibertec.app.entity.*;
 import com.cibertec.app.service.ClienteService;
 import com.cibertec.app.service.EstablecimientoService;
@@ -61,7 +62,7 @@ public class ClienteController {
     }
 
     @PostMapping("/Cliente/registerSubmited")
-    public String validarRegistro(@ModelAttribute("cliente") Cliente cliente, BindingResult resultado, Model model) {
+    public String validarRegistro(@ModelAttribute("cliente") ClienteRequestDTO cliente, BindingResult resultado, Model model) {
         Cliente clienteExistente = clienteService.getClienteByEmail(cliente.getCorreo());
         Cliente telefonoExistente = clienteService.getClienteByTelefono(cliente.getTelefono());
 
