@@ -1,6 +1,7 @@
 package com.cibertec.app.controller;
 
 import com.cibertec.app.dto.cliente.ClienteRequestDTO;
+import com.cibertec.app.dto.factura.FacturaResponseDTO;
 import com.cibertec.app.entity.*;
 import com.cibertec.app.service.ClienteService;
 import com.cibertec.app.service.EstablecimientoService;
@@ -222,13 +223,13 @@ public class ClienteController {
         return "/Cliente/confirmarEvento";
     }
     
-    @GetMapping("/Cliente/facturas")
+    /*@GetMapping("/Cliente/facturas")
     public String listarFacturas(HttpServletRequest request, Model model) {
         Long id = (Long) request.getSession().getAttribute("id");
-        List<Factura> facturas = facturaService.obtenerFacturaByCliente(id);
+        List<FacturaResponseDTO> facturas = facturaService.getFacturaByCliente(id);
         model.addAttribute("facturas", facturas);
         return "/Cliente/facturas"; 
-    }    
+    }*/
 
     public BigDecimal obtenerMontoLocal(Evento evento){
         Establecimiento local = evento.getEstablecimiento();
@@ -265,20 +266,20 @@ public class ClienteController {
 
     }
 
-    @PostMapping("/Cliente/confirmarEvento")
+    /*@PostMapping("/Cliente/confirmarEvento")
     public String confirmarEvento(@ModelAttribute("factura") Factura factura, HttpServletRequest request, Model model){
-        facturaService.guardarFactura(factura);
+        facturaService.saveFactura(factura);
         Long id = (Long) request.getSession().getAttribute("id");
         model.addAttribute("eventos", eventoService.getEventoByCliente(id));
         return "/Cliente/eventos";
 
-    }
+    }*/
 
-    @GetMapping("/Cliente/exportar/{idFactura}")
+    /*@GetMapping("/Cliente/exportar/{idFactura}")
     public void exportarPDF(@PathVariable Long idFactura, HttpServletResponse response) throws FileNotFoundException, JRException {
         File file = ResourceUtils.getFile("classpath:ReporteFactura.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Collections.singleton(facturaService.obtenerFacturaID(idFactura)));
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(Collections.singleton(facturaService.getFacturaById(idFactura)));
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, dataSource);
         OutputStream outStream = null;
         try {
@@ -287,5 +288,5 @@ public class ClienteController {
             throw new RuntimeException(e);
         }
         JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
-    }
+    }*/
 }
