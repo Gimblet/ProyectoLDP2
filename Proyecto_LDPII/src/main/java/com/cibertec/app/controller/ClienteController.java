@@ -1,6 +1,6 @@
 package com.cibertec.app.controller;
 
-import com.cibertec.app.dto.ClienteRequestDTO;
+import com.cibertec.app.dto.cliente.ClienteRequestDTO;
 import com.cibertec.app.entity.*;
 import com.cibertec.app.service.ClienteService;
 import com.cibertec.app.service.EstablecimientoService;

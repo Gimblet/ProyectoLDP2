@@ -1,4 +1,4 @@
-package com.cibertec.app.dto;
+package com.cibertec.app.dto.cliente;
 
 import lombok.Builder;
 import lombok.Data;

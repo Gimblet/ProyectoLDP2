@@ -1,7 +1,7 @@
 package com.cibertec.app.service.impl;
 
-import com.cibertec.app.dto.ClienteRequestDTO;
-import com.cibertec.app.dto.ClienteResponseDTO;
+import com.cibertec.app.dto.cliente.ClienteRequestDTO;
+import com.cibertec.app.dto.cliente.ClienteResponseDTO;
 import com.cibertec.app.entity.Cliente;
 import com.cibertec.app.mapper.ClienteMapper;
 import com.cibertec.app.repository.ClienteRepository;

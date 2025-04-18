@@ -1,7 +1,7 @@
 package com.cibertec.app.mapper;
 
-import com.cibertec.app.dto.ClienteRequestDTO;
-import com.cibertec.app.dto.ClienteResponseDTO;
+import com.cibertec.app.dto.cliente.ClienteRequestDTO;
+import com.cibertec.app.dto.cliente.ClienteResponseDTO;
 import com.cibertec.app.entity.Cliente;
 import org.springframework.stereotype.Component;
 
