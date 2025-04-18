@@ -1,25 +1,29 @@
 package com.cibertec.app.service.impl;
 
+import com.cibertec.app.dto.ClienteRequestDTO;
+import com.cibertec.app.dto.ClienteResponseDTO;
 import com.cibertec.app.entity.Cliente;
+import com.cibertec.app.mapper.ClienteMapper;
 import com.cibertec.app.repository.ClienteRepository;
 import com.cibertec.app.service.ClienteService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClienteServiceImpl implements ClienteService {
-    ClienteRepository clienteRepository;
-
-    public ClienteServiceImpl(ClienteRepository clienteRepository){
-        super();
-        this.clienteRepository = clienteRepository;
-    }
+    private final ClienteRepository clienteRepository;
+    private final ClienteMapper clienteMapper;
 
     @Override
-    public List<Cliente> getAllCliente() {
-        return clienteRepository.findAll();
+    public List<ClienteResponseDTO> getAllCliente() {
+        return clienteRepository.findAll()
+                .stream()
+                .map(clienteMapper::toDto)
+                .toList();
     }
 
     @Override
@@ -38,8 +42,9 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Cliente saveCliente(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public ClienteResponseDTO saveCliente(ClienteRequestDTO requestDTO) {
+        Cliente cliente = clienteMapper.toEntity(requestDTO);
+        return clienteMapper.toDto(clienteRepository.save(cliente));
     }
 
     @Override
