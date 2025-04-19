@@ -47,14 +47,14 @@ public class FacturaServiceImpl implements FacturaService {
     @Override
     public FacturaResponseDTO getFacturaByEvento(Long idEvento) {
         Factura factura = facturaRepository.findByEventoIdEvento(idEvento)
-                .orElseThrow(() -> new RuntimeException("No se encontró una factura para el evento con ID: " + idEvento));
+                .orElseThrow(() -> new RuntimeException("No se encontro una factura para el evento con ID: " + idEvento));
         return facturaMapper.toDto(factura);
     }
 
     @Override
     public FacturaResponseDTO saveFactura(FacturaRequestDTO requestDTO) {
         Evento evento = eventoService.buscarEventoById(requestDTO.getIdEvento());
-        if(facturaRepository.existsByIdEventoId(requestDTO.getIdEvento())) {
+        if(facturaRepository.existsByEventoIdEvento(requestDTO.getIdEvento())) {
             throw new RuntimeException("Ya existe una factura para el evento con ID: " + requestDTO.getIdEvento());
         }
 
@@ -65,30 +65,6 @@ public class FacturaServiceImpl implements FacturaService {
     }
 
 }
-    /*@Override
-    public List<Factura> getFacturaByEvento(Long idEvento) {
-        return null;
-    }
-
-    @Override
-    public void guardarFactura(Factura factura) {
-        facturaRepository.save(factura);
-    }
-
-    @Override
-    public List<Factura> getAllFactura() {
-        return List.of();
-    }
-
-    @Override
-    public Factura obtenerFacturaID(Long id) {
-        return facturaRepository.findById(id).get();
-    }
-
-    @Override
-    public List<Factura> obtenerFacturaByCliente(Long idCliente) {
-        return facturaRepository.obtenerFacturaByCliente(idCliente);
-    }*/
 
 
 
