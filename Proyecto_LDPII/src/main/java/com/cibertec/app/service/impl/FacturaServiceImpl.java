@@ -17,8 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FacturaServiceImpl implements FacturaService {
 
-
-    @Autowired
     private final FacturaRepository facturaRepository;
     private final FacturaMapper facturaMapper;
     private final EventoService eventoService;
