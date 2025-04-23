@@ -1,5 +1,6 @@
 package com.cibertec.app.entity;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ import lombok.*;
 @Table(name = "cliente")
 public class Cliente implements Serializable {
 
+	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	@Id
