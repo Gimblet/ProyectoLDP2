@@ -5,12 +5,11 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Builder
+@Entity
 @Table(name = "cliente")
 public class Cliente implements Serializable {
 
