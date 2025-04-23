@@ -8,15 +8,15 @@ import com.cibertec.app.entity.Cliente;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface ClienteService {
-	public List<ClienteResponseDTO> getAllCliente();
+	List<ClienteResponseDTO> getAllCliente();
 
-	public Cliente getClienteById(Long id);
+	Cliente getClienteById(Long id);
 
-	public Cliente getClienteByEmail(String email);
+	Cliente getClienteByEmail(String email);
 
-	public Cliente getClienteByTelefono(String telefono);
+	Cliente getClienteByTelefono(String telefono);
 
-	public ClienteResponseDTO saveCliente(ClienteRequestDTO requestDTO);
+	ClienteResponseDTO saveCliente(ClienteRequestDTO requestDTO);
 
-	public boolean login(Cliente cliente, HttpServletRequest request);
+	boolean login(Cliente cliente, HttpServletRequest request);
 }
