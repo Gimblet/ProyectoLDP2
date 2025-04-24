@@ -6,10 +6,8 @@ import com.cibertec.app.entity.Cliente;
 import com.cibertec.app.mapper.ClienteMapper;
 import com.cibertec.app.repository.ClienteRepository;
 import com.cibertec.app.service.ClienteService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -53,28 +51,56 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public void deleteClienteById(Long id) {
+        if(!clienteRepository.existsById(id))
+            throw new RuntimeException("Cliente No encontrado con id: " + id);
+        clienteRepository.deleteById(id);
+    }
+
+    @Override
     public Boolean existsClienteByTelefono(String telefono) {
         return clienteRepository.existsByTelefono(telefono);
     }
 
     @Override
     public ClienteResponseDTO saveCliente(ClienteRequestDTO requestDTO) {
+        Boolean correoExistente = clienteRepository.existsByCorreo(requestDTO.getCorreo());
+        Boolean telefonoExistente = clienteRepository.existsByTelefono(requestDTO.getTelefono());
+        
+        //Validaciones
+        if(correoExistente)
+            throw new RuntimeException("El correo proporcionado ya se encuentra registrado");
+        if(telefonoExistente)
+            throw new RuntimeException("El telefono proporcionado ya se encuentra registrado");
+        if(requestDTO.getCorreo().isEmpty())
+            throw new RuntimeException("El campo correo está vacio");
+        if(requestDTO.getTelefono().isEmpty())
+            throw new RuntimeException("El campo telefono está vacio");
+        if(requestDTO.getNombre().isEmpty())
+            throw new RuntimeException("El campo nombre está vacio");
+        if(requestDTO.getClave().isEmpty())
+            throw new RuntimeException("El campo clave está vacio");
+        if(requestDTO.getDireccion().isEmpty())
+            throw new RuntimeException("El campo dirección está vacio");
+        
         Cliente cliente = clienteMapper.toEntity(requestDTO);
         return clienteMapper.toDto(clienteRepository.save(cliente));
     }
-
-    @Override
-    public boolean login(Cliente cliente, HttpServletRequest request) {
-        boolean ingresado = false;
-        Cliente entidad = clienteRepository.findByEmailAndPassword(cliente.getCorreo(), cliente.getClave());
-
-        if(entidad != null){
-            ingresado = true;
-            request.getSession().setAttribute("id", entidad.getId());
-        }
-
-        System.out.println(request.getSession().getAttribute("id"));
-
-        return ingresado;
-    }
+    
+    
+//    TODO: Refactorlizar logica de Login (Metodo Antiguo)
+//    @Override
+//    public boolean login(Cliente cliente, HttpServletRequest request) {
+//        boolean ingresado = false;
+//        Cliente entidad = clienteRepository.findByEmailAndPassword(cliente.getCorreo(), cliente.getClave());
+//
+//        if(entidad != null){
+//            ingresado = true;
+//            request.getSession().setAttribute("id", entidad.getId());
+//        }
+//
+//        System.out.println(request.getSession().getAttribute("id"));
+//
+//        return ingresado;
+//    }
 }
