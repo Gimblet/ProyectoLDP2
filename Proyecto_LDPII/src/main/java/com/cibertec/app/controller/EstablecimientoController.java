@@ -30,7 +30,7 @@ public class EstablecimientoController {
         return establecimientoService.obtenerPorId(id);
     }
 
-    @DeleteMapping("{/id}")
+    @DeleteMapping("/{id}")
     public void eliminar(@PathVariable long id){
         establecimientoService.eliminar(id);
     }
