@@ -1,24 +1,13 @@
 package com.cibertec.app.controller;
 
 import com.cibertec.app.dto.cliente.ClienteRequestDTO;
-import com.cibertec.app.entity.*;
+import com.cibertec.app.dto.cliente.ClienteResponseDTO;
 import com.cibertec.app.mapper.ClienteMapper;
 import com.cibertec.app.service.ClienteService;
-import com.cibertec.app.service.EventoService;
-import com.cibertec.app.service.PersonalService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,12 +15,6 @@ import java.time.format.DateTimeFormatter;
 public class ClienteController {
     private final ClienteService service;
     private final ClienteMapper mapper;
-
-    @Autowired
-    EventoService eventoService;
-
-    @Autowired
-    PersonalService personalService;
     
     @GetMapping
     private List<ClienteResponseDTO> listar(){
@@ -39,7 +22,7 @@ public class ClienteController {
     }
     
     @PostMapping
-    private ClienteResponseDTO guardar(ClienteRequestDTO requestDTO){
+    private ClienteResponseDTO guardar(@RequestBody ClienteRequestDTO requestDTO){
         return service.saveCliente(requestDTO);
     }
    
@@ -57,17 +40,18 @@ public class ClienteController {
     private ClienteResponseDTO obtenerPorTelefono(@PathVariable String telefono){
         return mapper.toDto(service.getClienteByTelefono(telefono));
     }
+    
+    @DeleteMapping("/{id}")
+    private void eliminarPorId(@PathVariable Long id){
+        service.deleteClienteById(id);
+    }
+    
 //    @GetMapping("/Cliente/eventos")
 //    public String listarEventos(HttpServletRequest request, Model model) {
 //        Long id = (Long) request.getSession().getAttribute("id");
 //        model.addAttribute("eventos", eventoService.getEventoByCliente(id));
 //        return "/Cliente/eventos";
 //    }
-    
-    @DeleteMapping("/{id}")
-    private void eliminarPorId(@PathVariable Long id){
-        service.deleteClienteById(id);
-    }
     
 //    TODO: Refactorizar Login Antiguo usando API
 //    @PostMapping("/login")
