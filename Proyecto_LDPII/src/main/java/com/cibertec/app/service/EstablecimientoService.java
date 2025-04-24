@@ -16,6 +16,6 @@ public interface EstablecimientoService {
 
     void eliminar(Long id);
     //
-    Establecimiento obtenerEntidadPorId(Long id);
+    // Establecimiento obtenerEntidadPorId(Long id);
 
 }

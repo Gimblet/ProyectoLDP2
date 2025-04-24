@@ -49,11 +49,12 @@ public class EstablecimientoServiceImpl implements EstablecimientoService {
 
     //
 
-    @Override
-    public Establecimiento obtenerEntidadPorId(Long id) {
-        return establecimientoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Establecimiento no encontrado"));
-    }
+   // @Override
+   // public Establecimiento obtenerEntidadPorId(Long id) {
+       // return establecimientoRepository.findById(id)
+                //.orElseThrow(() -> new RuntimeException("Establecimiento no encontrado"));
+   // }
+
 }
 
 
