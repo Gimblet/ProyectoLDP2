@@ -5,18 +5,25 @@ import java.util.List;
 import com.cibertec.app.dto.cliente.ClienteRequestDTO;
 import com.cibertec.app.dto.cliente.ClienteResponseDTO;
 import com.cibertec.app.entity.Cliente;
-import jakarta.servlet.http.HttpServletRequest;
 
 public interface ClienteService {
-	public List<ClienteResponseDTO> getAllCliente();
+	//Metodos de Lista
+	List<ClienteResponseDTO> getAllCliente();
 
-	public Cliente getClienteById(Long id);
+	//Metodos de Persistencia
+	ClienteResponseDTO saveCliente(ClienteRequestDTO requestDTO);
 
-	public Cliente getClienteByEmail(String email);
+	//Metodos de Obtención
+	Cliente getClienteById(Long id);
+	Cliente getClienteByEmail(String email);
+	Cliente getClienteByTelefono(String telefono);
+	
+	//Metodos de Eliminacion
+	void deleteClienteById(Long id);
 
-	public Cliente getClienteByTelefono(String telefono);
-
-	public ClienteResponseDTO saveCliente(ClienteRequestDTO requestDTO);
-
-	public boolean login(Cliente cliente, HttpServletRequest request);
+	//Metodos Utilitarios
+	Boolean existsClienteByEmail(String email);
+	Boolean existsClienteByTelefono(String telefono);
+	
+//	boolean login(Cliente cliente, HttpServletRequest request);
 }

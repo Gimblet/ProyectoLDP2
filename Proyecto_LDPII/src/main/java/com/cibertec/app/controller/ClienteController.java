@@ -1,8 +1,10 @@
 package com.cibertec.app.controller;
 
 import com.cibertec.app.dto.cliente.ClienteRequestDTO;
+import com.cibertec.app.dto.cliente.ClienteResponseDTO;
 import com.cibertec.app.dto.factura.FacturaResponseDTO;
 import com.cibertec.app.entity.*;
+import com.cibertec.app.mapper.ClienteMapper;
 import com.cibertec.app.service.ClienteService;
 import com.cibertec.app.service.EstablecimientoService;
 import com.cibertec.app.service.EventoService;
@@ -10,18 +12,14 @@ import com.cibertec.app.service.FacturaService;
 import com.cibertec.app.service.PersonalService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,11 +30,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
-@Controller
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/cliente")
 public class ClienteController {
-
-    @Autowired
-    ClienteService clienteService;
+    private final ClienteService service;
+    private final ClienteMapper mapper;
 
     @Autowired
     EventoService eventoService;
@@ -49,66 +48,51 @@ public class ClienteController {
     
     @Autowired
     FacturaService facturaService;
-
-    @GetMapping("/")
-    public String Index() {
-        return "index";
+   
+    @GetMapping
+    private List<ClienteResponseDTO> listar(){
+        return service.getAllCliente();
+    }
+    
+    @PostMapping
+    private ClienteResponseDTO guardar(ClienteRequestDTO requestDTO){
+        return service.saveCliente(requestDTO);
+    }
+   
+    @GetMapping("/{id}")
+    private ClienteResponseDTO obtenerPorId(@PathVariable Long id){
+        return mapper.toDto(service.getClienteById(id));
+    }
+    
+    @GetMapping("/e{email}")
+    private ClienteResponseDTO obtenerPorEmail(@PathVariable String email){
+        return mapper.toDto(service.getClienteByEmail(email));
     }
 
-    @GetMapping("/Cliente/register")
-    public String RegistroCliente(Model model) {
-        Cliente cliente = new Cliente();
-        model.addAttribute("cliente", cliente);
-        return "Cliente/register";
+    @GetMapping("/t{telefono}")
+    private ClienteResponseDTO obtenerPorTelefono(@PathVariable String telefono){
+        return mapper.toDto(service.getClienteByTelefono(telefono));
     }
-
-    @PostMapping("/Cliente/registerSubmited")
-    public String validarRegistro(@ModelAttribute("cliente") ClienteRequestDTO cliente, BindingResult resultado, Model model) {
-        Cliente clienteExistente = clienteService.getClienteByEmail(cliente.getCorreo());
-        Cliente telefonoExistente = clienteService.getClienteByTelefono(cliente.getTelefono());
-
-        if (cliente.getNombre() == null || cliente.getNombre().isEmpty()) {
-            resultado.rejectValue("nombre", null, "Ingresar nombres");
-        }
-
-        if (clienteExistente != null && clienteExistente.getCorreo() != null && !clienteExistente.getCorreo().isEmpty()) {
-            resultado.rejectValue("correo", null, "Ya existe una cuenta con este correo");
-        }
-
-        if (cliente.getClave() == null || cliente.getClave().isEmpty()) {
-            resultado.rejectValue("clave", null, "Ingresar clave");
-        }
-
-        if (telefonoExistente != null && telefonoExistente.getTelefono() != null && !telefonoExistente.getTelefono().isEmpty()) {
-            resultado.rejectValue("telefono", null, "Ya existe una cuenta con este telefono");
-        }
-
-        if (cliente.getDireccion() == null || cliente.getDireccion().isEmpty()) {
-            resultado.rejectValue("direccion", null, "Ingresar Direccion");
-        }
-
-        if (resultado.hasErrors()) {
-            model.addAttribute("cliente", cliente);
-            return "/Cliente/register";
-        }
-
-        clienteService.saveCliente(cliente);
-        return "redirect:/Cliente/register?success";
+    
+    @DeleteMapping("/{id}")
+    private void eliminarPorId(@PathVariable Long id){
+        service.deleteClienteById(id);
     }
-
-    @PostMapping("/login")
-    public String iniciarSesion(Cliente cliente, HttpServletRequest request, Model model) {
-
-        boolean resultado = clienteService.login(cliente, request);
-
-        if (resultado) {
-            Long id = (Long) request.getSession().getAttribute("id");
-            model.addAttribute("eventos", eventoService.getEventoByCliente(id));
-            return "/Cliente/eventos";
-        } else {
-            return "redirect:?error";
-        }
-    }
+    
+//    TODO: Refactorizar Login Antiguo usando API
+//    @PostMapping("/login")
+//    public String iniciarSesion(Cliente cliente, HttpServletRequest request, Model model) {
+//
+//        boolean resultado = service.login(cliente, request);
+//
+//        if (resultado) {
+//            Long id = (Long) request.getSession().getAttribute("id");
+//            model.addAttribute("eventos", eventoService.getEventoByCliente(id));
+//            return "/Cliente/eventos";
+//        } else {
+//            return "redirect:?error";
+//        }
+//    }
 
     @GetMapping("/Cliente/eventos")
     public String listarEventos(HttpServletRequest request, Model model) {
@@ -117,11 +101,12 @@ public class ClienteController {
         return "/Cliente/eventos";
     }
     
-    @GetMapping("/Cliente/cerrarSesion")
-    public String cerrarSesion(HttpServletRequest request) {
-    	request.getSession().invalidate();
-    	return "index";
-    }
+//    TODO: Refactorizar cerrar Sesion Antiguo con API    
+//    @GetMapping("/Cliente/cerrarSesion")
+//    public String cerrarSesion(HttpServletRequest request) {
+//    	request.getSession().invalidate();
+//    	return "index";
+//    }
 
     @GetMapping("/Cliente/preCreateEvento")
     public String preCreateEvento(Model model, HttpServletRequest request) {
