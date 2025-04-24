@@ -1,16 +1,19 @@
 package com.cibertec.app.service;
 
+import com.cibertec.app.dto.factura.FacturaRequestDTO;
+import com.cibertec.app.dto.factura.FacturaResponseDTO;
 import com.cibertec.app.entity.Factura;
 import java.util.List;
 
 public interface FacturaService {
-    public List<Factura> getAllFactura();
+    List<FacturaResponseDTO> getAllFacturas();
 
-    public Factura obtenerFacturaID(Long id);
+    FacturaResponseDTO getFacturaById(Long id);
 
-    public List<Factura> obtenerFacturaByCliente(Long idCliente);
+    List<FacturaResponseDTO> getFacturaByCliente(Long idCliente);
 
-    public List<Factura> getFacturaByEvento(Long idEvento);
+    FacturaResponseDTO getFacturaByEvento(Long idEvento);
 
-    public void guardarFactura(Factura factura);
+    FacturaResponseDTO saveFactura(FacturaRequestDTO requestDTO);
 }
+

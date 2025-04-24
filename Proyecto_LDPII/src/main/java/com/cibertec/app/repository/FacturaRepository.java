@@ -14,5 +14,6 @@ public interface FacturaRepository extends JpaRepository<Factura, Long> {
     public List<Factura> obtenerFacturaByCliente(@Param("idCliente") Long idCliente);
 
     Optional<Factura> findByEventoIdEvento(Long idEvento);
+    boolean existsByEventoIdEvento(Long idEvento);
 }
 
