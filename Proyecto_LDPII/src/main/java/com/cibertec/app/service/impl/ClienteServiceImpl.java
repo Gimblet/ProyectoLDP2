@@ -28,17 +28,33 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente getClienteById(Long id) {
-        return clienteRepository.findById(id).get();
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> 
+                        new RuntimeException("Cliente No encontrado con id: " + id));
     }
 
     @Override
     public Cliente getClienteByEmail(String email) {
+        if(!clienteRepository.existsByCorreo(email))
+            throw new RuntimeException("Cliente No encontrado con email:" + email);
         return clienteRepository.findByEmail(email);
     }
 
     @Override
+    public Boolean existsClienteByEmail(String email) {
+        return  clienteRepository.existsByCorreo(email);
+    }
+
+    @Override
     public Cliente getClienteByTelefono(String telefono) {
+        if(!clienteRepository.existsByTelefono(telefono))
+            throw new RuntimeException("Cliente No encontrado con telefono:" + telefono);
         return clienteRepository.findByTelefono(telefono);
+    }
+
+    @Override
+    public Boolean existsClienteByTelefono(String telefono) {
+        return clienteRepository.existsByTelefono(telefono);
     }
 
     @Override

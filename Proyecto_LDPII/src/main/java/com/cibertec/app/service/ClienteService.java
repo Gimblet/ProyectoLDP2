@@ -11,10 +11,14 @@ public interface ClienteService {
 	List<ClienteResponseDTO> getAllCliente();
 
 	Cliente getClienteById(Long id);
-
+	
 	Cliente getClienteByEmail(String email);
+	
+	Boolean existsClienteByEmail(String email);
 
 	Cliente getClienteByTelefono(String telefono);
+	
+	Boolean existsClienteByTelefono(String telefono);
 
 	ClienteResponseDTO saveCliente(ClienteRequestDTO requestDTO);
 

@@ -13,8 +13,12 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query(value = "FROM Cliente c WHERE c.correo = :correo")
     Cliente findByEmail(@Param("correo") String correo);
+    
+    Boolean existsByCorreo(String correo);
 
     @Query(value = "FROM Cliente AS c WHERE c.telefono = :telefono")
     Cliente findByTelefono(@Param("telefono") String telefono);
+
+    Boolean existsByTelefono(String telefono);
 
 }

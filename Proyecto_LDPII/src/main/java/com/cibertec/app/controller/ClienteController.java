@@ -63,23 +63,31 @@ public class ClienteController {
 
     @PostMapping("/Cliente/registerSubmited")
     public String validarRegistro(@ModelAttribute("cliente") ClienteRequestDTO cliente, BindingResult resultado, Model model) {
-        Cliente clienteExistente = clienteService.getClienteByEmail(cliente.getCorreo());
-        Cliente telefonoExistente = clienteService.getClienteByTelefono(cliente.getTelefono());
+        Boolean clienteExistente = clienteService.existsClienteByEmail(cliente.getCorreo());
+        Boolean telefonoExistente = clienteService.existsClienteByTelefono(cliente.getTelefono());
 
         if (cliente.getNombre() == null || cliente.getNombre().isEmpty()) {
             resultado.rejectValue("nombre", null, "Ingresar nombres");
         }
 
-        if (clienteExistente != null && clienteExistente.getCorreo() != null && !clienteExistente.getCorreo().isEmpty()) {
+        if (clienteExistente) {
             resultado.rejectValue("correo", null, "Ya existe una cuenta con este correo");
+        }
+        
+        if (cliente.getCorreo().isEmpty()) {
+            resultado.rejectValue("correo", null, "Ingresa un correo");
+        }
+        
+        if(telefonoExistente) {
+            resultado.rejectValue("telefono", null, "Ya existe una cuenta con este telefono");
+        }
+        
+        if (cliente.getTelefono().isEmpty()) {
+            resultado.rejectValue("telefono", null, "Ingresa un numero de telefono");
         }
 
         if (cliente.getClave() == null || cliente.getClave().isEmpty()) {
             resultado.rejectValue("clave", null, "Ingresar clave");
-        }
-
-        if (telefonoExistente != null && telefonoExistente.getTelefono() != null && !telefonoExistente.getTelefono().isEmpty()) {
-            resultado.rejectValue("telefono", null, "Ya existe una cuenta con este telefono");
         }
 
         if (cliente.getDireccion() == null || cliente.getDireccion().isEmpty()) {
