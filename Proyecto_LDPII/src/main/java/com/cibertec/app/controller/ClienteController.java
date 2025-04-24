@@ -8,18 +8,14 @@ import com.cibertec.app.service.EventoService;
 import com.cibertec.app.service.PersonalService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,9 +33,6 @@ public class ClienteController {
     @Autowired
     PersonalService personalService;
     
-    @Autowired
-    FacturaService facturaService;
-   
     @GetMapping
     private List<ClienteResponseDTO> listar(){
         return service.getAllCliente();
@@ -64,6 +57,12 @@ public class ClienteController {
     private ClienteResponseDTO obtenerPorTelefono(@PathVariable String telefono){
         return mapper.toDto(service.getClienteByTelefono(telefono));
     }
+//    @GetMapping("/Cliente/eventos")
+//    public String listarEventos(HttpServletRequest request, Model model) {
+//        Long id = (Long) request.getSession().getAttribute("id");
+//        model.addAttribute("eventos", eventoService.getEventoByCliente(id));
+//        return "/Cliente/eventos";
+//    }
     
     @DeleteMapping("/{id}")
     private void eliminarPorId(@PathVariable Long id){
