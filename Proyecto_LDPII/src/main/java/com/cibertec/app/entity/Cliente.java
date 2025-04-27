@@ -2,6 +2,8 @@ package com.cibertec.app.entity;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,4 +38,7 @@ public class Cliente implements Serializable {
 
 	@Column(name = "direccion", nullable = false, length = 150)
 	private String direccion;
+
+	@OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+	private List<Evento> eventos = new ArrayList<>();
 }

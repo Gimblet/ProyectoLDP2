@@ -2,6 +2,8 @@ package com.cibertec.app.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,4 +32,7 @@ public class Establecimiento implements Serializable {
 
 	@Column(name = "Precio_alquiler", precision = 10, scale = 2)
 	private BigDecimal precio;
+
+	@OneToMany(mappedBy = "establecimiento", fetch = FetchType.LAZY)
+	private List<Evento> eventos = new ArrayList<>();
 }

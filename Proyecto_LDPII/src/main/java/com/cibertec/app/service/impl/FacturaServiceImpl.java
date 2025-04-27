@@ -1,9 +1,11 @@
 package com.cibertec.app.service.impl;
 
+import com.cibertec.app.dto.evento.EventoResponseDTO;
 import com.cibertec.app.dto.factura.FacturaRequestDTO;
 import com.cibertec.app.dto.factura.FacturaResponseDTO;
 import com.cibertec.app.entity.Evento;
 import com.cibertec.app.entity.Factura;
+import com.cibertec.app.mapper.evento.EventoMapper;
 import com.cibertec.app.mapper.factura.FacturaMapper;
 import com.cibertec.app.repository.FacturaRepository;
 import com.cibertec.app.service.EventoService;
@@ -20,6 +22,7 @@ public class FacturaServiceImpl implements FacturaService {
     private final FacturaRepository facturaRepository;
     private final FacturaMapper facturaMapper;
     private final EventoService eventoService;
+    private final EventoMapper eventoMapper;
 
     @Override
     public List<FacturaResponseDTO> getAllFacturas() {
@@ -51,7 +54,8 @@ public class FacturaServiceImpl implements FacturaService {
 
     @Override
     public FacturaResponseDTO saveFactura(FacturaRequestDTO requestDTO) {
-        Evento evento = eventoService.buscarEventoById(requestDTO.getIdEvento());
+        EventoResponseDTO eventoDTO = eventoService.getById(requestDTO.getIdEvento());
+        Evento evento = eventoMapper.toEntity(eventoDTO);
         if(facturaRepository.existsByEventoIdEvento(requestDTO.getIdEvento())) {
             throw new RuntimeException("Ya existe una factura para el evento con ID: " + requestDTO.getIdEvento());
         }
