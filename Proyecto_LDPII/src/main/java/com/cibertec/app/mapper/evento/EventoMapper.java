@@ -19,10 +19,13 @@ public class EventoMapper {
                 .monto(evento.getMonto())
                 .nombrePersonal(evento.getPersonal().getNombre())
                 .rolPersonal(evento.getPersonal().getRol())
+                .montoPersonal(evento.getPersonal().getMonto())
                 .nombreEstablecimiento(evento.getEstablecimiento().getNombre())
                 .direccionEstablecimiento(evento.getEstablecimiento().getDireccion())
+                .precioEstablecimiento(evento.getEstablecimiento().getPrecio())
                 .nombreCliente(evento.getCliente().getNombre())
                 .correo(evento.getCliente().getCorreo())
+                .telefono(evento.getCliente().getTelefono())
                 .direccionCliente(evento.getCliente().getDireccion())
                 .build();
     }
