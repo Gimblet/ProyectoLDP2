@@ -9,97 +9,110 @@ import com.cibertec.app.repository.EstablecimientoRepository;
 import com.cibertec.app.repository.EventoRepository;
 import com.cibertec.app.repository.PersonalRepository;
 import com.cibertec.app.service.EventoService;
-import com.cibertec.app.service.FacturaService;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class EventoServiceImpl implements EventoService {
 
-    private final EventoRepository eventoRepo;
-    private final PersonalRepository personalRepo;
-    private final EstablecimientoRepository estableRepo;
-    private final ClienteRepository clienteRepo;
-    private final EventoMapper mapper;
-
-    public EventoServiceImpl(
-            EventoRepository eventoRepo,
-            PersonalRepository personalRepo,
-            EstablecimientoRepository estableRepo,
-            ClienteRepository clienteRepo,
-            EventoMapper mapper) {
-        this.eventoRepo = eventoRepo;
-        this.personalRepo = personalRepo;
-        this.estableRepo = estableRepo;
-        this.clienteRepo = clienteRepo;
-        this.mapper = mapper;
-    }
+    private final EventoRepository eventoRepository;
+    private final PersonalRepository personalRepository;
+    private final EstablecimientoRepository establecimientoRepository;
+    private final ClienteRepository clienteRepository;
+    private final EventoMapper eventoMapper;
 
     @Override
     public List<EventoResponseDTO> getAll() {
-        return eventoRepo.findAll()
-                .stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+        return eventoRepository.findAll().stream()
+                .map(eventoMapper::toDto)
+                .toList();
     }
 
     @Override
     public EventoResponseDTO getById(Long id) {
-        Evento evento = eventoRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Evento no encontrado con id " + id));
-        return mapper.toDto(evento);
+        Evento evento = loadEntityById(eventoRepository, id, "Evento");
+        return eventoMapper.toDto(evento);
+    }
+
+
+    public record AssociatedEntities(
+            Personal personal,
+            Establecimiento establecimiento,
+            Cliente cliente,
+            Optional<Evento> evento
+    ) {}
+
+    private <T> T loadEntityById(
+            CrudRepository<T, Long> repository,
+            Long id,
+            String entityName
+    ) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(entityName + " no encontrado con id " + id));
+    }
+
+    private AssociatedEntities getForCreate(EventoRequestDTO req) {
+        Personal personal = loadEntityById(personalRepository, req.getIdPersonal(), "Personal");
+        Establecimiento establecimiento = loadEntityById(establecimientoRepository, req.getIdEstablecimiento(), "Establecimiento");
+        Cliente cliente = loadEntityById(clienteRepository, req.getIdCliente(), "Cliente");
+        return new AssociatedEntities(personal, establecimiento, cliente, Optional.empty());
+    }
+
+    private AssociatedEntities getForUpdate(Long id, EventoRequestDTO req) {
+        Personal personal = loadEntityById(personalRepository, req.getIdPersonal(), "Personal");
+        Establecimiento establecimiento = loadEntityById(establecimientoRepository, req.getIdEstablecimiento(), "Establecimiento");
+        Cliente cliente = loadEntityById(clienteRepository, req.getIdCliente(), "Cliente");
+        Evento evento = loadEntityById(eventoRepository, id, "Evento");
+        return new AssociatedEntities(personal, establecimiento, cliente, Optional.of(evento));
     }
 
     @Override
     public EventoResponseDTO create(EventoRequestDTO req) {
-        Personal p = personalRepo.findById(req.getIdPersonal())
-                .orElseThrow(() -> new EntityNotFoundException("Personal no encontrado con id " + req.getIdPersonal()));
-        Establecimiento e = estableRepo.findById(req.getIdEstablecimiento())
-                .orElseThrow(() -> new EntityNotFoundException("Establecimiento no encontrado con id " + req.getIdEstablecimiento()));
-        Cliente c = clienteRepo.findById(req.getIdCliente())
-                .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con id " + req.getIdCliente()));
+        AssociatedEntities asociados = getForCreate(req);
 
-        Evento nuevo = mapper.toEntity(req, p, e, c);
-        Evento guardado = eventoRepo.save(nuevo);
-        return mapper.toDto(guardado);
+        Evento nuevo = eventoMapper.toEntity(
+                req,
+                asociados.personal(),
+                asociados.establecimiento(),
+                asociados.cliente()
+        );
+
+        Evento guardado = eventoRepository.save(nuevo);
+        return eventoMapper.toDto(guardado);
     }
 
     @Override
     public EventoResponseDTO update(Long id, EventoRequestDTO req) {
-        Evento existente = eventoRepo.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Evento no encontrado con id " + id));
+        AssociatedEntities asociados = getForUpdate(id, req);
 
-        Personal personal = personalRepo.findById(req.getIdPersonal())
-                .orElseThrow(() -> new EntityNotFoundException("Personal no encontrado con id " + req.getIdPersonal()));
-        Establecimiento establecimiento = estableRepo.findById(req.getIdEstablecimiento())
-                .orElseThrow(() -> new EntityNotFoundException("Establecimiento no encontrado con id " + req.getIdEstablecimiento()));
-        Cliente cliente = clienteRepo.findById(req.getIdCliente())
-                .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con id " + req.getIdCliente()));
+        Evento existente = asociados.evento()
+                .orElseThrow(() -> new EntityNotFoundException("Evento no presente para actualización"));
 
         existente.setNombre(req.getNombre());
         existente.setFecha(req.getFecha());
         existente.setDuracion(req.getDuracion());
         existente.setMonto(req.getMonto());
-        existente.setPersonal(personal);
-        existente.setEstablecimiento(establecimiento);
-        existente.setCliente(cliente);
+        existente.setPersonal(asociados.personal());
+        existente.setEstablecimiento(asociados.establecimiento());
+        existente.setCliente(asociados.cliente());
 
-        Evento modificado = eventoRepo.save(existente);
-        return mapper.toDto(modificado);
+        Evento modificado = eventoRepository.save(existente);
+        return eventoMapper.toDto(modificado);
     }
 
     @Override
     public void delete(Long id) {
-        if (!eventoRepo.existsById(id)) {
+        if (!eventoRepository.existsById(id)) {
             throw new EntityNotFoundException("Evento no encontrado con id " + id);
         }
-        eventoRepo.deleteById(id);
+        eventoRepository.deleteById(id);
     }
 }
