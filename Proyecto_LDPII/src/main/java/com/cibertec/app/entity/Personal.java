@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -31,4 +33,6 @@ public class Personal implements Serializable {
     @Column(name = "rolPersonal", length = 100, nullable = false)
     private String rol;
 
+    @OneToMany(mappedBy = "personal", fetch = FetchType.LAZY)
+    private List<Evento> eventos = new ArrayList<>();
 }

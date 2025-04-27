@@ -41,4 +41,14 @@ public class EventoMapper {
                 .cliente(cliente)
                 .build();
     }
+
+    public Evento toEntity(EventoResponseDTO responseDTO) {
+        return Evento.builder()
+                .idEvento(responseDTO.getIdEvento())
+                .nombre(responseDTO.getNombreEvento())
+                .fecha(responseDTO.getFecha())
+                .duracion(responseDTO.getDuracion())
+                .monto(responseDTO.getMonto())
+                .build();
+    }
 }
