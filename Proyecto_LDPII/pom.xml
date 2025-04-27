@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.cibertec</groupId>
     <artifactId>Proyecto_LDPII</artifactId>
-    <version>0.0.1</version>
+    <version>0.5.0</version>
     <packaging>war</packaging>
     <name>Proyecto_LDPII</name>
     <description>Proyecto para el curso de Lenguaje de Programacion II</description>
